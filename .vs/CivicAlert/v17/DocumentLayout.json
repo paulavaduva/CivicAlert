@@ -1,0 +1,321 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\dtos\\issueupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:dtos\\issueupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\services\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:services\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\services\\interfaces\\iissueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:services\\interfaces\\iissueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\services\\interfaces\\icategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:services\\interfaces\\icategoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\models\\issue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:models\\issue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\context\\civicalertcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:context\\civicalertcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\dtos\\issuecreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:dtos\\issuecreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|c:\\users\\pvadu\\desktop\\ace calculatoare\\cr4\\licenta\\aplicatie\\civicalert\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{15D11E21-279A-49C3-8490-E5195F5DFBAB}|CivicAlert.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAHMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T22:48:16.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAiwIEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T16:11:59.028Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IssuesController.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\IssuesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\IssuesController.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\IssuesController.cs",
+              "RelativeToolTip": "Controllers\\IssuesController.cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAuwGIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T14:29:57.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CategoriesController.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\CategoriesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CategoriesController.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Controllers\\CategoriesController.cs",
+              "RelativeToolTip": "Controllers\\CategoriesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T17:29:07.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IIssueService.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\Interfaces\\IIssueService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IIssueService.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\Interfaces\\IIssueService.cs",
+              "RelativeToolTip": "Services\\Interfaces\\IIssueService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T16:22:23.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IssueService.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\IssueService.cs",
+              "RelativeDocumentMoniker": "Services\\IssueService.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\IssueService.cs",
+              "RelativeToolTip": "Services\\IssueService.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAADwv28AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T16:22:29.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IssueUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\DTOs\\IssueUpdateDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\IssueUpdateDto.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\DTOs\\IssueUpdateDto.cs",
+              "RelativeToolTip": "DTOs\\IssueUpdateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T16:22:05.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CategoryRepository.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Repositories\\CategoryRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\CategoryRepository.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Repositories\\CategoryRepository.cs",
+              "RelativeToolTip": "Repositories\\CategoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T17:19:26.859Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ICategoryService.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\Interfaces\\ICategoryService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\ICategoryService.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\Interfaces\\ICategoryService.cs",
+              "RelativeToolTip": "Services\\Interfaces\\ICategoryService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T17:16:51.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CategoryService.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\CategoryService.cs",
+              "RelativeDocumentMoniker": "Services\\CategoryService.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Services\\CategoryService.cs",
+              "RelativeToolTip": "Services\\CategoryService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T17:16:52.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CivicAlertContext.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Context\\CivicAlertContext.cs",
+              "RelativeDocumentMoniker": "Context\\CivicAlertContext.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Context\\CivicAlertContext.cs",
+              "RelativeToolTip": "Context\\CivicAlertContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T16:23:25.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IssueCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\DTOs\\IssueCreateDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\IssueCreateDto.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\DTOs\\IssueCreateDto.cs",
+              "RelativeToolTip": "DTOs\\IssueCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T16:22:00.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Issue.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\Issue.cs",
+              "RelativeDocumentMoniker": "Models\\Issue.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\Issue.cs",
+              "RelativeToolTip": "Models\\Issue.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAADwvycAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T18:11:18.251Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "appsettings.Development.json",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\appsettings.Development.json",
+              "RelativeToolTip": "appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-06T14:52:51.351Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\Category.cs",
+              "RelativeDocumentMoniker": "Models\\Category.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\Category.cs",
+              "RelativeToolTip": "Models\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T17:03:32.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T14:12:24.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\pvadu\\Desktop\\ACE Calculatoare\\CR4\\Licenta\\Aplicatie\\CivicAlert\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-06T14:57:27.758Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
