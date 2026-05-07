@@ -1,0 +1,13 @@
+﻿using CivicAlert.DTOs;
+using CivicAlert.Models;
+
+namespace CivicAlert.Services.Interfaces
+{
+    public interface IIssueService
+    {
+        Task<IEnumerable<Issue>> GetAllIssuesAsync();
+        Task<Issue> CreateIssueAsync(IssueCreateDto dto, string userId);
+        Task<Issue?> GetIssueByIdAsync(int id);
+        Task<Issue?> UpdateIssueAsync(int id, IssueUpdateDto dto, string userId, bool isAdmin);
+    }
+}

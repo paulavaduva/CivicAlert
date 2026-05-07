@@ -1,5 +1,9 @@
 using CivicAlert.Context;
 using CivicAlert.Models;
+using CivicAlert.Repositories;
+using CivicAlert.Repositories.Interfaces;
+using CivicAlert.Services;
+using CivicAlert.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +44,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<CivicAlertContext>(options =>
-    options.UseNpgsql(connectionString));
+builder.Services.AddIdentity<User, IdentityRole>(options => {
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<CivicAlertContext>()
+.AddSignInManager()
+.AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -66,16 +76,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentity<User, IdentityRole>(options => {
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-})
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<CivicAlertContext>()
-.AddSignInManager()
-.AddDefaultTokenProviders();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<CivicAlertContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<Supabase.Client>(_ =>
     new Supabase.Client(
@@ -86,11 +90,18 @@ builder.Services.AddScoped<Supabase.Client>(_ =>
 );
 
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+builder.Services.AddScoped<IIssueService, IssueService>();
+builder.Services.AddScoped<IFileService, FileService>();
+
 
 var app = builder.Build();
 

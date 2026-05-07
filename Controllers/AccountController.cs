@@ -69,7 +69,7 @@ namespace CivicAlert.Controllers
 
             if (result.Succeeded && user != null)
             {
-                var token = GenerateJwtToken(user);
+                var token = await GenerateJwtToken(user);
 
                 return Ok(new
                 {
@@ -99,15 +99,22 @@ namespace CivicAlert.Controllers
             });
         }
 
-        private string GenerateJwtToken(User user)
+        private async Task<string> GenerateJwtToken(User user)
         {
-            var claims = new[]
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim("firstName", user.FirstName),
-                new Claim("lastName", user.LastName)
+                new Claim("lastName", user.LastName),
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
