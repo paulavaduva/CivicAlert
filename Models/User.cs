@@ -7,5 +7,8 @@ namespace CivicAlert.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public ICollection<Issue> Issues { get; set; }
+        public string Role { get; set; } 
+        public int? DepartmentId { get; set; } 
+        public Department? Department { get; set; }
     }
 }
