@@ -36,7 +36,7 @@ namespace CivicAlert.Services
                 CategoryId = dto.CategoryId,
                 ImageUrl = imageUrl,
                 UserId = userId,
-                Status = IssueStatus.New, 
+                Status = IssueStatus.Pending, 
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -65,6 +65,47 @@ namespace CivicAlert.Services
 
             await _repo.UpdateAsync(existingIssue);
             return existingIssue;
+        }
+
+        public async Task<Issue?> ValidateIssueAsync(int id, string dispatcherId, bool isApproved)
+        {
+            var issue = await _repo.GetByIdAsync(id);
+            if (issue == null) return null;
+
+            issue.Status = isApproved ? IssueStatus.Validated : IssueStatus.Rejected;
+            issue.DispatcherId = dispatcherId;
+            issue.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(issue);
+            return issue;
+        }
+
+        public async Task<Issue?> AssignToTeamLeaderAsync(int id, string teamLeaderId)
+        {
+            var issue = await _repo.GetByIdAsync(id);
+            if (issue == null) return null;
+
+            issue.AssignedToUserId = teamLeaderId;
+            issue.Status = IssueStatus.Assigned;
+            issue.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(issue);
+            return issue;
+        }
+
+        public async Task<Issue?> CompleteIssueAsync(int id, IFormFile resultImage)
+        {
+            var issue = await _repo.GetByIdAsync(id);
+            if (issue == null) return null;
+
+            var resolvedUrl = await _fileService.UploadImageAsync(resultImage);
+
+            issue.ResolvedImageUrl = resolvedUrl;
+            issue.Status = IssueStatus.Solved;
+            issue.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(issue);
+            return issue;
         }
     }
 }

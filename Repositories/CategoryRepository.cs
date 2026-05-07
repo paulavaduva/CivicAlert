@@ -12,7 +12,12 @@ namespace CivicAlert.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Category>> GetAllAsync() => await _context.Categories.ToListAsync();
+        public async Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return await _context.Categories
+                .Include(c => c.Department)
+                .ToListAsync();
+        }
         public async Task<Category?> GetByIdAsync(int id) => await _context.Categories.FindAsync(id);
         public async Task AddAsync(Category category)
         {

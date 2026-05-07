@@ -12,13 +12,19 @@ namespace CivicAlert.Controllers
     {
         private readonly IIssueService _service;
 
-        public IssuesController(IIssueService service) => _service = service;
+        public IssuesController(IIssueService service)
+        {
+            _service = service;
+        }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _service.GetAllIssuesAsync());
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _service.GetAllIssuesAsync());
+        }
 
         [HttpPost]
-        [Authorize] 
+        [Authorize]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] IssueCreateDto dto)
         {
@@ -26,7 +32,7 @@ namespace CivicAlert.Controllers
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
             var result = await _service.CreateIssueAsync(dto, userId);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
         [HttpGet("{id}")]
@@ -55,6 +61,40 @@ namespace CivicAlert.Controllers
             {
                 return Forbid(); 
             }
+        }
+
+        [HttpPatch("{id}/validate")]
+        [Authorize(Roles = "Dispatcher,Admin")]
+        public async Task<IActionResult> Validate(int id, [FromBody] bool isApproved)
+        {
+            var dispatcherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _service.ValidateIssueAsync(id, dispatcherId!, isApproved);
+
+            if (result == null) return NotFound();
+            return Ok(new { message = "Issue status updated by dispatcher.", issue = result });
+        }
+
+        [HttpPatch("{id}/assign")]
+        [Authorize(Roles = "HOD,Admin")]
+        public async Task<IActionResult> Assign(int id, [FromBody] string teamLeaderId)
+        {
+            var result = await _service.AssignToTeamLeaderAsync(id, teamLeaderId);
+
+            if (result == null) return NotFound();
+            return Ok(new { message = "Issue successfully assigned to team leader.", issue = result });
+        }
+
+        [HttpPatch("{id}/complete")]
+        [Authorize(Roles = "TeamLeader,Admin")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Complete(int id, [FromForm] CompleteIssueDto dto)
+        {
+            if (dto.ResultImage == null) return BadRequest("The result image is required.");
+
+            var result = await _service.CompleteIssueAsync(id, dto.ResultImage);
+
+            if (result == null) return NotFound();
+            return Ok(result);
         }
     }
 }

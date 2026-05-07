@@ -2,8 +2,12 @@
 {
     public enum IssueStatus
     {
-        New,
-        Solved
+        Pending,   
+        Validated,  
+        Assigned,   
+        InProgress, 
+        Solved,     
+        Rejected    
     }
 
     public class Issue
@@ -26,8 +30,13 @@
         public Category? Category { get; set; }
 
         public string UserId { get; set; }
-        public User User { get; set; }
+        public User Reporter { get; set; }
 
+        public string? DispatcherId { get; set; }
+        public User? Dispatcher { get; set; }
+        public string? AssignedToUserId { get; set; }
+        public User? AssignedToUser { get; set; }
+        public string? ResolvedImageUrl { get; set; } 
 
     }
 }

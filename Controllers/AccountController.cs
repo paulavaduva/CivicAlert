@@ -46,7 +46,8 @@ namespace CivicAlert.Controllers
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+                Role = "User"
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -54,7 +55,47 @@ namespace CivicAlert.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
-                return Ok(new { message = "Cont creat cu succes "});
+                return Ok(new { message = "User registered successfully " });
+            }
+
+            return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
+        }
+
+        [Authorize(Roles = "Admin,HOD")]
+        [HttpPost("register-staff")]
+        public async Task<IActionResult> RegisterStaff([FromBody] RegisterStaffDto model)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) return Unauthorized();
+
+            await EnsureRolesExist();
+
+            var newUser = new User
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            if (User.IsInRole("Admin"))
+            {
+                newUser.Role = model.Role;
+                newUser.DepartmentId = model.DepartmentId;
+            }
+            else if (User.IsInRole("HOD"))
+            {
+                newUser.Role = "TeamLeader";
+                newUser.DepartmentId = currentUser.DepartmentId; 
+            }
+
+            var result = await _userManager.CreateAsync(newUser, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, newUser.Role);
+                return Ok(new { message = $"{newUser.Role} account successfully created in department {newUser.DepartmentId}" });
             }
 
             return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
@@ -73,12 +114,12 @@ namespace CivicAlert.Controllers
 
                 return Ok(new
                 {
-                    message = "Logare reușită!",
+                    message = "Login successful!",
                     accessToken = token
                 });
             }
 
-            return Unauthorized(new { message = "Email sau parolă incorectă." });
+            return Unauthorized(new { message = "Invalid email or password." });
         }
 
         [HttpGet("user-info")]
@@ -88,12 +129,11 @@ namespace CivicAlert.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
 
-            var roles = await _userManager.GetRolesAsync(user);
-
             return Ok(new
             {
                 email = user.Email,
-                roles = roles,
+                role = user.Role,
+                departmentId = user.DepartmentId,
                 firstName = user.FirstName,
                 lastName = user.LastName
             });
@@ -101,15 +141,17 @@ namespace CivicAlert.Controllers
 
         private async Task<string> GenerateJwtToken(User user)
         {
-            var roles = await _userManager.GetRolesAsync(user);
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim("firstName", user.FirstName),
                 new Claim("lastName", user.LastName),
+                new Claim("role", user.Role),
+                new Claim("deptId", user.DepartmentId?.ToString() ?? "0")
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
 
             foreach (var role in roles)
             {
@@ -128,6 +170,18 @@ namespace CivicAlert.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async Task EnsureRolesExist()
+        {
+            string[] roles = { "Admin", "Dispatcher", "HOD", "TeamLeader", "User" };
+            foreach (var role in roles)
+            {
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
         }
     }
 }
