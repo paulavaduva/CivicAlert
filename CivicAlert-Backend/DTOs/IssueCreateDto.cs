@@ -1,4 +1,6 @@
-﻿namespace CivicAlert.DTOs
+﻿using CivicAlert.Models;
+
+namespace CivicAlert.DTOs
 {
     public class IssueCreateDto
     {
@@ -6,7 +8,7 @@
         public string Description { get; set; } = string.Empty;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public int Severity { get; set; } = 1;
+        public IssueSeverity Severity { get; set; }
         public int CategoryId { get; set; }
         public IFormFile? Image { get; set; } 
     }

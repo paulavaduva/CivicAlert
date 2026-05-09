@@ -7,6 +7,6 @@ namespace CivicAlert.DTOs
         public string? Name { get; set; }
         public string? Description { get; set; }
         public IssueStatus Status { get; set; }
-        public int Severity { get; set; }
+        public IssueSeverity Severity { get; set; }
     }
 }
