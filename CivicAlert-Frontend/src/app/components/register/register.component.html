@@ -1,0 +1,81 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow-lg" style="width: 100%; max-width: 450px; border-radius: 15px;">
+    
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">CivicAlert</h2>
+      <p class="text-muted">Creează-ți contul acum</p>
+    </div>
+
+    <form (ngSubmit)="onRegister()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="firstName" class="form-label small fw-bold">Prenume</label>
+          <input 
+            type="text" 
+            id="firstName"
+            name="firstName" 
+            [(ngModel)]="registerData.firstName" 
+            class="form-control shadow-sm" 
+            placeholder="Ex: Ion"
+            required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="lastName" class="form-label small fw-bold">Nume</label>
+          <input 
+            type="text" 
+            id="lastName"
+            name="lastName" 
+            [(ngModel)]="registerData.lastName" 
+            class="form-control shadow-sm" 
+            placeholder="Ex: Popescu"
+            required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label small fw-bold">Email</label>
+        <input 
+          type="email" 
+          id="email"
+          name="email" 
+          [(ngModel)]="registerData.email" 
+          class="form-control shadow-sm" 
+          placeholder="nume@exemplu.com"
+          required>
+      </div>
+
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label small fw-bold">Telefon</label>
+        <input 
+          type="tel" 
+          id="phoneNumber"
+          name="phoneNumber" 
+          [(ngModel)]="registerData.phoneNumber" 
+          class="form-control shadow-sm" 
+          placeholder="07xxxxxxxx"
+          required>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label small fw-bold">Parolă</label>
+        <input 
+          type="password" 
+          id="password"
+          name="password" 
+          [(ngModel)]="registerData.password" 
+          class="form-control shadow-sm" 
+          placeholder="Minim 6 caractere"
+          required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+        Înregistrare
+      </button>
+    </form>
+
+    <div class="text-center mt-3">
+      <small>Ai deja cont? <a routerLink="/login" class="text-decoration-none">Loghează-te</a></small>
+    </div>
+
+  </div>
+</div>

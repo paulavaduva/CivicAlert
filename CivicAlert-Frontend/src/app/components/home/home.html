@@ -1,0 +1,150 @@
+@if (apiLoaded) {
+<div class="dashboard-wrapper">
+  <google-map [center]="center" [zoom]="zoom" [options]="options" height="100%" width="100%">
+    @for (issue of issues; track issue.id) {
+    <map-marker [position]="{ lat: issue.latitude, lng: issue.longitude }" [title]="issue.name"
+      (mapClick)="onIssueClick(issue)">
+    </map-marker>
+    }
+  </google-map>
+
+  <div class="glass-sidebar shadow-lg">
+    <div class="p-3">
+      <h4 class="fw-bold mb-4 text-dark">📢 Alerte Recente</h4>
+
+      <div class="issues-list">
+        @for (issue of issues; track issue.id) {
+        <div class="alert-card mb-3 shadow-sm" [class.active]="selectedIssue?.id === issue.id"
+          (click)="onIssueClick(issue)">
+
+          <div class="severity-indicator" [ngClass]="{
+            'bg-info': issue.severity == 1 || issue.severity === 'Low',
+            'bg-warning': issue.severity == 2 || issue.severity === 'Medium',
+            'bg-orange': issue.severity == 3 || issue.severity === 'High',
+            'bg-danger pulse-animation': issue.severity == 4 || issue.severity === 'Urgent'
+          }"></div>
+
+          <div class="card-body p-3">
+            <h6 class="issue-title mb-0 text-truncate">{{ issue.name }}</h6>
+            
+            <div class="mb-2">
+              <small class="text-muted">
+                <i class="bi bi-calendar3 me-1" style="font-size: 0.75rem;"></i>
+                {{ issue.createdAt | date:'dd/MM/yyyy HH:mm' }}
+              </small>
+            </div>
+
+            <div class="d-flex align-items-center mb-2 location-row">
+              <i class="bi bi-geo-alt me-1 text-primary" style="font-size: 0.85rem;"></i>
+              <span class="small text-truncate text-muted" style="max-width: 180px;">
+                {{ issue.locationName || 'Se calculează adresa...' }}
+              </span>
+            </div>
+
+            <div class="mt-2 d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
+                <span class="status-dot me-2" [ngClass]="{
+                        'status-pending': issue.status == 0 || issue.status === 'Pending',
+                        'status-progress': issue.status == 3 || issue.status === 'InProgress',
+                        'status-resolved': issue.status == 4 || issue.status === 'Solved'
+                }"></span>
+                <span class="status-text small text-uppercase">
+                    @if (issue.status == 0 || issue.status === 'Pending') { Pending }
+                    @else if (issue.status == 1 || issue.status === 'Validated') { Validated }
+                    @else if (issue.status == 2 || issue.status === 'Assigned') { Assigned }
+                    @else if (issue.status == 3 || issue.status === 'InProgress') { In Progress }
+                    @else if (issue.status == 4 || issue.status === 'Solved') { Solved }
+                    @else if (issue.status == 5 || issue.status === 'Rejected') { Rejected }
+                    @else { {{ issue.status }} }
+                </span>
+              </div>
+              <i class="bi bi-chevron-right small text-muted"></i>
+            </div>
+          </div>
+        </div>
+        } @empty {
+        <div class="text-center py-5">
+          <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+          <p class="text-muted mt-2">Nu există sesizări.</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (selectedIssue) {
+  <div class="detail-panel shadow-lg">
+    <div class="detail-header">
+      <button class="btn-close-custom" (click)="selectedIssue = null" title="Închide detaliile" aria-label="Închide detaliile">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      
+      @if (selectedIssue.imageUrl) {
+        <img [src]="selectedIssue.imageUrl" class="detail-img" alt="Imagine sesizare">
+      } @else {
+        <div class="no-img-placeholder">
+          <i class="bi bi-image text-muted"></i>
+          <span>Fără imagine atașată</span>
+        </div>
+      }
+    </div>
+
+    <div class="detail-content p-4">
+      <div class="d-flex align-items-center mb-2">
+        <span class="badge rounded-pill me-2" [ngClass]="{
+                'bg-danger': selectedIssue.severity == 4 || selectedIssue.severity === 'Urgent',
+                'bg-orange text-white': selectedIssue.severity == 3 || selectedIssue.severity === 'High',
+                'bg-warning text-dark': selectedIssue.severity == 2 || selectedIssue.severity === 'Medium',
+                'bg-info': selectedIssue.severity == 1 || selectedIssue.severity === 'Low'
+              }">
+          @if (selectedIssue.severity == 1 || selectedIssue.severity === 'Low') { Scăzut }
+          @else if (selectedIssue.severity == 2 || selectedIssue.severity === 'Medium') { Medium }
+          @else if (selectedIssue.severity == 3 || selectedIssue.severity === 'High') { High }
+          @else if (selectedIssue.severity == 4 || selectedIssue.severity === 'Urgent') { Urgent }
+        </span>
+        <span class="badge bg-light text-dark border rounded-pill">
+            @if (selectedIssue.status == 0 || selectedIssue.status === 'Pending') { Pending }
+            @else if (selectedIssue.status == 1 || selectedIssue.status === 'Validated') { Validated }
+            @else if (selectedIssue.status == 2 || selectedIssue.status === 'Assigned') { Assigned }
+            @else if (selectedIssue.status == 3 || selectedIssue.status === 'InProgress') { In Progress }
+            @else if (selectedIssue.status == 4 || selectedIssue.status === 'Solved') { Solved }
+            @else { {{ selectedIssue.status }} }
+        </span>
+      </div>
+
+      <h3 class="fw-bold mb-3">{{ selectedIssue.name }}</h3>
+      
+      <div class="info-row mb-3">
+        <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+        <span>{{ selectedIssue.locationName }}</span>
+      </div>
+
+      <div class="info-row mb-4">
+        <i class="bi bi-calendar-event text-primary me-2"></i>
+        <span>Raportat la: {{ selectedIssue.createdAt | date:'dd MMMM yyyy, HH:mm' }}</span>
+      </div>
+
+      <h6 class="fw-bold text-uppercase small text-muted mb-2">Descriere</h6>
+      <p class="description-text">{{ selectedIssue.description }}</p>
+
+      <!-- <hr class="my-4">
+
+      <div class="d-grid">
+        <button class="btn btn-primary rounded-pill">
+          <i class="bi bi-megaphone me-2"></i> Preia Sesizarea
+        </button>
+      </div> -->
+    </div>
+  </div>
+  }
+
+  <button class="fab-btn shadow-lg" title="Raportează o problemă" aria-label="Raportează o problemă">
+    <i class="bi bi-plus-lg"></i>
+  </button>
+</div>
+} @else {
+<div class="loader-container">
+  <div class="spinner-grow text-primary" role="status"></div>
+  <p class="mt-3 fw-bold text-uppercase letter-spacing">Se inițializează CivicAlert</p>
+</div>
+}

@@ -10,6 +10,14 @@
         Rejected    
     }
 
+    public enum IssueSeverity
+    {
+        Low = 1,
+        Medium = 2,
+        High = 3,
+        Urgent = 4
+    }
+
     public class Issue
     {
         public int Id { get; set; }
@@ -24,7 +32,7 @@
         public IssueStatus Status { get; set; }
 
         public string? ImageUrl { get; set; }
-        public int Severity { get; set; } = 1;
+        public IssueSeverity Severity { get; set; }
 
         public int CategoryId { get; set; }
         public Category? Category { get; set; }

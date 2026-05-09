@@ -32,7 +32,7 @@ namespace CivicAlert.Services
                 Description = dto.Description,
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
-                Severity = dto.Severity,
+                Severity = (IssueSeverity)dto.Severity,
                 CategoryId = dto.CategoryId,
                 ImageUrl = imageUrl,
                 UserId = userId,
@@ -60,7 +60,7 @@ namespace CivicAlert.Services
             existingIssue.Name = dto.Name ?? existingIssue.Name;
             existingIssue.Description = dto.Description ?? existingIssue.Description;
             existingIssue.Status = dto.Status;
-            existingIssue.Severity = dto.Severity;
+            existingIssue.Severity = (IssueSeverity)dto.Severity;
             existingIssue.UpdatedAt = DateTime.UtcNow;
 
             await _repo.UpdateAsync(existingIssue);

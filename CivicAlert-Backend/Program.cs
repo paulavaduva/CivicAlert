@@ -89,6 +89,16 @@ builder.Services.AddScoped<Supabase.Client>(_ =>
     )
 );
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CivicAlertPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") 
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
 
 
 builder.Services.AddControllers();
@@ -116,6 +126,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CivicAlertPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
