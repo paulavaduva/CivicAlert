@@ -68,6 +68,9 @@
       @if (authService.isLoggedIn()) {
         
         <div class="menu-divider px-4 py-2 small fw-bold text-uppercase">Zona Cetățean</div>
+        <a routerLink="/add-issue" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
+            <i class="bi bi-plus-circle me-3"></i>Create Issue
+        </a>
         <a routerLink="/profile" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
             <i class="bi bi-person-circle me-3"></i>Profilul meu
         </a>
@@ -84,10 +87,10 @@
 
         @if (authService.userRole() === 'Admin') {
           <div class="menu-divider px-4 py-2 small fw-bold text-uppercase">Administrare</div>
-          <a routerLink="/admin/users" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
-            <i class="bi bi-people me-3"></i>Utilizatori
+          <a routerLink="/user-management" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
+            <i class="bi bi-people me-3"></i>Gestionare Utilizatori
           </a>
-          <a routerLink="/admin/departments" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
+          <a routerLink="/departments" class="list-group-item list-group-item-action border-0 bg-transparent text-white py-3 px-4" data-bs-dismiss="offcanvas">
             <i class="bi bi-building me-3"></i>Departamente
           </a>
         }

@@ -1,0 +1,82 @@
+<div class="container py-5 mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">
+      <i class="bi bi-people-fill me-2 text-primary"></i>Gestionare Utilizatori
+    </h2>
+    <button class="btn btn-primary rounded-pill px-4 shadow-sm" routerLink="/register-staff">
+      <i class="bi bi-person-plus me-1"></i> Adaugă Staff
+    </button>
+  </div>
+
+  <div class="btn-group mb-4 shadow-sm rounded-pill p-1 bg-white">
+    <button class="btn rounded-pill px-4" [class.btn-primary]="activeFilter() === 'all'" (click)="setFilter('all')">Toți</button>
+    <button class="btn rounded-pill px-4" [class.btn-primary]="activeFilter() === 'staff'" (click)="setFilter('staff')">Echipă (Staff)</button>
+    <button class="btn rounded-pill px-4" [class.btn-primary]="activeFilter() === 'citizens'" (click)="setFilter('citizens')">Cetățeni</button>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="bg-light">
+        <tr>
+          <th class="ps-4">Utilizator</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Departament</th>
+          <th class="text-center">Acțiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.id) {
+          <tr>
+            <td class="ps-4">
+              @if (editingUserId() === user.id) {
+                <input type="text" class="form-control form-control-sm mb-1" [(ngModel)]="editModel.firstName" title="Prenume">
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="editModel.lastName" title="Nume">
+              } @else {
+                <div class="fw-bold">{{ user.firstName }} {{ user.lastName }}</div>
+                <div class="small text-muted">{{ user.phoneNumber }}</div>
+              }
+            </td>
+            <td>{{ user.email }}</td>
+            <td>
+              @if (editingUserId() === user.id) {
+                <select class="form-select form-select-sm" [(ngModel)]="editModel.role" title="Rol">
+                  <option value="Admin">Admin</option>
+                  <option value="HOD">HOD</option>
+                  <option value="Dispatcher">Dispatcher</option>
+                  <option value="TeamLeader">TeamLeader</option>
+                  <option value="User">User</option>
+                </select>
+              } @else {
+                <span class="badge rounded-pill" [ngClass]="user.role === 'User' ? 'bg-secondary' : 'bg-info text-dark'">
+                  {{ user.role }}
+                </span>
+              }
+            </td>
+            <td>
+                @if (editingUserId() === user.id && editModel.role !== 'User') {
+                    <select class="form-select form-select-sm" [(ngModel)]="editModel.departmentId" title="Departament">
+                    <option [value]="0">Fără (N/A)</option>
+                    @for (dept of departments(); track dept.id) {
+                        <option [value]="dept.id">{{ dept.name }}</option>
+                    }
+                    </select>
+                } @else {
+                    <span class="text-dark">{{ user.departmentName }}</span>
+                }
+            </td>
+            <td class="text-center">
+              @if (editingUserId() === user.id) {
+                <button class="btn btn-sm btn-success rounded-circle me-1" (click)="onSaveUpdate()" title="Salvează"><i class="bi bi-check"></i></button>
+                <button class="btn btn-sm btn-secondary rounded-circle" (click)="editingUserId.set(null)" title="Anulează"><i class="bi bi-x"></i></button>
+              } @else {
+                <button class="btn btn-sm btn-light rounded-circle me-1" (click)="onEdit(user)" title="Editează"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-light rounded-circle" (click)="onDelete(user.id)" title="Șterge"><i class="bi bi-trash text-danger"></i></button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

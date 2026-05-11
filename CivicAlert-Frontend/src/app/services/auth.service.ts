@@ -67,6 +67,8 @@ export class AuthService {
     try {
       const decoded: any = jwtDecode(token);
       
+      const netRoleKey = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+      if (field === 'role') return decoded[field] || decoded[netRoleKey] || null;
       return decoded[field] || null;
     } catch {
       return null;
@@ -75,5 +77,21 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('civic_token');
+  }
+
+  getUsers(filter?: string): Observable<any[]> {
+    let url = `${this.apiUrl}/users`;
+    if (filter && filter !== 'all') {
+      url += `?filter=${filter}`;
+    }
+    return this.http.get<any[]>(url);
+  }
+
+  updateUser(userId: string, userData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}`, userData);
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/users/${userId}`);
   }
 }

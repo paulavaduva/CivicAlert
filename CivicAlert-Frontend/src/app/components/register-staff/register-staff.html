@@ -1,0 +1,89 @@
+<div class="container py-5 mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+        
+        <div class="mb-3">
+          <button class="btn btn-sm btn-light rounded-pill px-3 text-muted fw-bold border-0" 
+                  routerLink="/user-management" 
+                  title="Înapoi la gestionare utilizatori">
+            <i class="bi bi-arrow-left me-1"></i> Înapoi la listă
+          </button>
+        </div>
+
+        <h2 class="fw-bold mb-4 text-center text-dark">
+          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Înregistrare Personal
+        </h2>
+
+        @if (message().text) {
+          <div class="alert alert-{{message().type}} alert-dismissible fade show rounded-3 mb-4" role="alert">
+            {{ message().text }}
+            <button type="button" class="btn-close" (click)="message.set({text:'', type:''})" aria-label="Închide"></button>
+          </div>
+        }
+
+        <form (ngSubmit)="onSubmit()" #staffForm="ngForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label small fw-bold text-muted text-uppercase">Prenume</label>
+              <input type="text" id="firstName" name="firstName" class="form-control rounded-3" 
+                     [(ngModel)]="staffModel.firstName" required title="Introduceți prenumele angajatului">
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label small fw-bold text-muted text-uppercase">Nume</label>
+              <input type="text" id="lastName" name="lastName" class="form-control rounded-3" 
+                     [(ngModel)]="staffModel.lastName" required title="Introduceți numele de familie">
+            </div>
+
+            <div class="col-md-6">
+              <label for="email" class="form-label small fw-bold text-muted text-uppercase">Email (Username)</label>
+              <input type="email" id="email" name="email" class="form-control rounded-3" 
+                     [(ngModel)]="staffModel.email" required title="Introduceți adresa de email">
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label small fw-bold text-muted text-uppercase">Telefon</label>
+              <input type="text" id="phone" name="phone" class="form-control rounded-3" 
+                     [(ngModel)]="staffModel.phoneNumber" required title="Introduceți numărul de telefon">
+            </div>
+
+            <div class="col-12">
+              <label for="password" class="form-label small fw-bold text-muted text-uppercase">Parolă Inițială</label>
+              <input type="password" id="password" name="password" class="form-control rounded-3" 
+                     [(ngModel)]="staffModel.password" required title="Setați o parolă provizorie">
+            </div>
+
+            <div class="col-md-6">
+              <label for="role" class="form-label small fw-bold text-muted text-uppercase">Rol Atribuit</label>
+              <select id="role" name="role" class="form-select rounded-3" [(ngModel)]="staffModel.role" required title="Selectați rolul angajatului">
+                <option value="" disabled>Alege rol...</option>
+                @for (role of roles; track role) {
+                  <option [value]="role">{{ role }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="dept" class="form-label small fw-bold text-muted text-uppercase">Departament</label>
+              <select id="dept" name="dept" class="form-select rounded-3" [(ngModel)]="staffModel.departmentId" required title="Selectați departamentul">
+                <option [value]="0" disabled>Alege departament...</option>
+                @for (dept of departments(); track dept.id) {
+                  <option [value]="dept.id">{{ dept.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-12 mt-4">
+              <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm" 
+                      [disabled]="!staffForm.valid || isSubmitting">
+                @if (isSubmitting) {
+                  <span class="spinner-border spinner-border-sm me-2"></span> Se creează contul...
+                } @else {
+                  <i class="bi bi-shield-check me-2"></i> Finalizează Înregistrarea
+                }
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,7 @@ namespace CivicAlert.Services
                 Description = dto.Description,
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
+                Address = dto.Address,
                 Severity = (IssueSeverity)dto.Severity,
                 CategoryId = dto.CategoryId,
                 ImageUrl = imageUrl,

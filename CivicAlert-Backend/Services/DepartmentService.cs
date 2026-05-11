@@ -17,5 +17,21 @@ namespace CivicAlert.Services
             await _repo.AddAsync(dept);
             return dept;
         }
+        public async Task<Department?> UpdateDepartmentAsync(int id, string name)
+        {
+            var dept = await _repo.GetByIdAsync(id);
+            if (dept == null) return null;
+            dept.Name = name;
+            await _repo.UpdateAsync(dept);
+            return dept;
+        }
+
+        public async Task<bool> DeleteDepartmentAsync(int id)
+        {
+            var dept = await _repo.GetByIdAsync(id);
+            if (dept == null) return false;
+            await _repo.DeleteAsync(dept);
+            return true;
+        }
     }
 }

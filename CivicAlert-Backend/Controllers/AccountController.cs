@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using CivicAlert.Context;
 
 namespace CivicAlert.Controllers
 {
@@ -19,17 +21,20 @@ namespace CivicAlert.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
+        private readonly CivicAlertContext _context;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration config)
+            IConfiguration config,
+            CivicAlertContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -182,6 +187,77 @@ namespace CivicAlert.Controllers
                     await _roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
+        }
+
+        [HttpDelete("users/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("Utilizatorul nu a fost găsit.");
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return NoContent();
+        }
+
+        // 2. Actualizare Utilizator (Nume, Telefon, Departament, Rol)
+        [HttpPut("users/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.DepartmentId = dto.DepartmentId == 0 ? null : dto.DepartmentId;
+
+            // Actualizare Rol (ștergem rolurile vechi și punem cel nou)
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRoleAsync(user, dto.Role);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return Ok(new { message = "Utilizator actualizat cu succes" });
+        }
+
+        [HttpGet("users")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUsers([FromQuery] string? filter)
+        {
+            var users = await _context.Users
+                .Include(u => u.Department)
+                .ToListAsync();
+            var result = new List<object>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var userRole = roles.FirstOrDefault() ?? "User";
+
+                // Logică de filtrare simplă
+                if (filter == "staff" && userRole == "User") continue;
+                if (filter == "citizens" && userRole != "User") continue;
+
+                result.Add(new
+                {
+                    user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.Email,
+                    user.PhoneNumber,
+                    Role = userRole,
+                    user.DepartmentId,
+                    DepartmentName = user.Department?.Name ?? "-"
+                });
+            }
+
+            return Ok(result);
         }
     }
 }
