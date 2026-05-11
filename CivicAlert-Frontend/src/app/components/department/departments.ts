@@ -18,7 +18,6 @@ export class DepartmentComponent implements OnInit {
   newDeptName = '';
   isSubmitting = false;
 
-  // Stare pentru Editare
   editingId = signal<number | null>(null);
   editName = '';
 

@@ -108,5 +108,27 @@ namespace CivicAlert.Services
             await _repo.UpdateAsync(issue);
             return issue;
         }
+
+        public async Task<IEnumerable<Issue>> GetStaffInboxAsync(string userId, string role, int? deptId)
+        {
+            var allIssues = await _repo.GetStaffIssuesAsync();
+
+            if (role == "Dispatcher" || role == "Admin")
+            {
+                return allIssues;
+            }
+
+            if (role == "HOD" && deptId.HasValue)
+            {
+                return allIssues.Where(i => i.Category?.DepartmentId == deptId.Value);
+            }
+
+            if (role == "TeamLeader")
+            {
+                return allIssues.Where(i => i.AssignedToUserId == userId);
+            }
+
+            return Enumerable.Empty<Issue>();
+        }
     }
 }

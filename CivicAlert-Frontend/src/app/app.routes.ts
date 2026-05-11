@@ -6,6 +6,7 @@ import { RegisterStaffComponent } from './components/register-staff/register-sta
 import { HomeComponent } from './components/home/home';
 import { UserManagementComponent } from './components/user-management/user-management';
 import { roleGuard } from './guards/role.guard';
+import { IssueManagementComponent } from './components/issue-management/issue-management';
 
 
 export const routes: Routes = [
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'departments', component: DepartmentComponent },
     { path: 'register-staff', component: RegisterStaffComponent, canActivate: [roleGuard(['Admin'])] },
     { path: 'user-management', component: UserManagementComponent, canActivate: [roleGuard(['Admin'])] },
+    { path: 'issue-management', component: IssueManagementComponent, canActivate: [roleGuard(['Admin', 'Dispatcher', 'HOD', 'TeamLeader'])]},
     { path: '', redirectTo: 'home', pathMatch: 'full' } 
 ];

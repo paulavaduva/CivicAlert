@@ -9,6 +9,9 @@ export class MapService {
   isApiLoaded = signal<boolean>(false);
   private geocoder?: google.maps.Geocoder;
 
+  private map?: google.maps.Map;
+  private markers: any[] = [];
+
   constructor() {}
 
   loadGoogleMaps(): Promise<void> {
@@ -36,6 +39,51 @@ export class MapService {
 
       document.head.appendChild(script);
     });
+  }
+
+  initMap(elementId: string, lat: number = 44.318, lng: number = 23.800): void {
+    const mapElement = document.getElementById(elementId);
+    if (!mapElement) return;
+
+    this.map = new google.maps.Map(mapElement, {
+      center: { lat, lng },
+      zoom: 13,
+      mapId: '235d6d515b0d9cea3d45655c', 
+      mapTypeControl: false,
+      streetViewControl: false,
+    });
+  }
+
+  async addMarker(lat: number, lng: number, title: string, onClick?: () => void) {
+    if (!this.map) return;
+
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+
+    const marker = new AdvancedMarkerElement({
+      map: this.map,
+      position: { lat, lng },
+      title: title,
+    });
+
+    if (onClick) {
+      marker.addListener('click', () => {
+        this.zone.run(() => onClick());
+      });
+    }
+
+    this.markers.push(marker);
+  }
+
+  clearMarkers(): void {
+    this.markers.forEach(m => m.map = null); 
+    this.markers = [];
+  }
+
+  flyTo(lat: number, lng: number): void {
+    if (this.map) {
+      this.map.panTo({ lat, lng });
+      this.map.setZoom(16);
+    }
   }
 
   async getAddress(lat: number, lng: number): Promise<string> {

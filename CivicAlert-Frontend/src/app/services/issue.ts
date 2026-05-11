@@ -41,4 +41,8 @@ export class IssueService {
   completeIssue(id: number, formData: FormData): Observable<Issue> {
     return this.http.patch<Issue>(`${this.apiUrl}/${id}/complete`, formData);
   }
+
+  getStaffInbox(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/staff-inbox`);
+  }
 }
