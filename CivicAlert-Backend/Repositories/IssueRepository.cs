@@ -24,5 +24,16 @@ namespace CivicAlert.Repositories
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+        public async Task<IEnumerable<Issue>> GetStaffIssuesAsync()
+        {
+            return await _context.Issues
+                .Include(i => i.Category)
+                    .ThenInclude(c => c.Department)
+                .Include(i => i.Reporter)
+                .Include(i => i.AssignedToUser) 
+                .OrderByDescending(i => i.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

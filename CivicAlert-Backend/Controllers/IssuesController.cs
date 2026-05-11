@@ -96,5 +96,19 @@ namespace CivicAlert.Controllers
             if (result == null) return NotFound();
             return Ok(result);
         }
+
+        [HttpGet("staff-inbox")]
+        [Authorize(Roles = "Admin,Dispatcher,HOD,TeamLeader")]
+        public async Task<IActionResult> GetStaffInbox()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            var deptIdClaim = User.FindFirst("deptId")?.Value;
+            int? deptId = !string.IsNullOrEmpty(deptIdClaim) ? int.Parse(deptIdClaim) : null;
+
+            var issues = await _service.GetStaffInboxAsync(userId, role, deptId);
+            return Ok(issues);
+        }
     }
 }
