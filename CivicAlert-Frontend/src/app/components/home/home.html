@@ -37,7 +37,7 @@
             <div class="d-flex align-items-center mb-2 location-row">
               <i class="bi bi-geo-alt me-1 text-primary" style="font-size: 0.85rem;"></i>
               <span class="small text-truncate text-muted" style="max-width: 180px;">
-                {{ issue.locationName || 'Se calculează adresa...' }}
+                {{ issue.address || 'Se calculează adresa...' }}
               </span>
             </div>
 
@@ -116,7 +116,7 @@
       
       <div class="info-row mb-3">
         <i class="bi bi-geo-alt-fill text-primary me-2"></i>
-        <span>{{ selectedIssue.locationName }}</span>
+        <span>{{ selectedIssue.address }}</span>
       </div>
 
       <div class="info-row mb-4">
@@ -138,9 +138,9 @@
   </div>
   }
 
-  <button class="fab-btn shadow-lg" title="Raportează o problemă" aria-label="Raportează o problemă">
+  <!-- <button class="fab-btn shadow-lg" title="Raportează o problemă" aria-label="Raportează o problemă">
     <i class="bi bi-plus-lg"></i>
-  </button>
+  </button> -->
 </div>
 } @else {
 <div class="loader-container">

@@ -20,4 +20,14 @@ export class DepartmentService {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+
+  updateDepartment(id: number, name: string): Observable<Department> {
+    return this.http.put<Department>(`${this.apiUrl}/${id}`, JSON.stringify(name), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  deleteDepartment(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

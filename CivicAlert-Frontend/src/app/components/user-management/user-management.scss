@@ -1,0 +1,147 @@
+// Variabile tematice
+$primary: #0d6efd;
+$staff-bg: rgba(13, 110, 253, 0.08);
+$citizen-bg: rgba(108, 117, 125, 0.08);
+
+.container {
+  max-width: 1200px;
+}
+
+// Filtre (Button Group)
+.btn-group {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  
+  .btn {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6c757d;
+    border: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $primary;
+      background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    &.btn-primary {
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+  }
+}
+
+// Tabelul de utilizatori
+.card {
+  border: none;
+  background: #ffffff;
+}
+
+.table {
+  thead th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #edf2f7;
+    color: #718096;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: #fcfcfd;
+    }
+  }
+
+  td {
+    padding: 1.2rem 1rem;
+    vertical-align: middle;
+  }
+}
+
+// Badges pentru roluri
+.badge {
+  padding: 0.5em 0.8em;
+  font-weight: 600;
+  font-size: 0.75rem;
+  
+  &.bg-info {
+    background-color: #e0f2fe !important;
+    color: #0369a1 !important;
+  }
+  
+  &.bg-secondary {
+    background-color: #f3f4f6 !important;
+    color: #4b5563 !important;
+  }
+}
+
+// Stiluri pentru starea de Editare Inline
+.form-control-sm, .form-select-sm {
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+  }
+}
+
+// Butoane de acțiune rotunde
+.btn-light {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  
+  &:hover {
+    background: #ffffff;
+    border-color: $primary;
+    color: $primary;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+}
+
+.btn-success, .btn-secondary {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+// Avatar placeholder (Opțional, dacă vrei să-l adaugi în HTML)
+.avatar-placeholder {
+  width: 38px;
+  height: 38px;
+  background: $primary;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .btn-group {
+    width: 100%;
+    display: flex;
+    .btn { flex: 1; padding: 0.5rem; font-size: 0.8rem; }
+  }
+  
+  .table-responsive {
+    border: 0;
+  }
+}

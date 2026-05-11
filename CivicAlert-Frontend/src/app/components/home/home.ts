@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.mapService.loadGoogleMaps().then(() => {
       this.fetchIssues();
+      this.cdr.detectChanges();
     });
   }
 
@@ -47,21 +48,21 @@ export class HomeComponent implements OnInit {
     this.issueService.getIssues().subscribe({
       next: (data) => {
         this.issues = data;
-        this.enrichIssuesWithAddresses();
+        // this.enrichIssuesWithAddresses();
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Eroare date:', err)
     });
   } 
 
-  async enrichIssuesWithAddresses() {
-    for (const issue of this.issues) {
-      if (!issue.locationName) { 
-        issue.locationName = await this.mapService.getAddress(issue.latitude, issue.longitude);
-        this.cdr.detectChanges(); 
-      }
-    }
-  }
+  // async enrichIssuesWithAddresses() {
+  //   for (const issue of this.issues) {
+  //     if (!issue.locationName) { 
+  //       issue.locationName = await this.mapService.getAddress(issue.latitude, issue.longitude);
+  //       this.cdr.detectChanges(); 
+  //     }
+  //   }
+  // }
 
   onIssueClick(issue: Issue) {
     this.selectedIssue = issue;

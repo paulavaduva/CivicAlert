@@ -1,0 +1,40 @@
+.shadow-hover {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+  }
+}
+
+.table {
+  thead th {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:hover { background-color: rgba(13, 110, 253, 0.03); }
+  }
+}
+
+.btn-light {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &:hover { background: #ffffff; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+}
+
+.btn-success, .btn-secondary {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

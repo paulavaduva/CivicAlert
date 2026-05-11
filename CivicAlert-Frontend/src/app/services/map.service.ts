@@ -1,10 +1,11 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject, NgZone } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
+  private zone = inject(NgZone);
   isApiLoaded = signal<boolean>(false);
   private geocoder?: google.maps.Geocoder;
 
@@ -12,7 +13,7 @@ export class MapService {
 
   loadGoogleMaps(): Promise<void> {
     return new Promise((resolve) => {
-      if (this.isApiLoaded() || typeof google !== 'undefined') {
+      if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
         this.isApiLoaded.set(true);
         this.geocoder = new google.maps.Geocoder();
         resolve();
@@ -20,14 +21,17 @@ export class MapService {
       }
 
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&loading=async&callback=Function.prototype`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&callback=Function.prototype`;
       script.async = true;
       script.defer = true;
 
       script.onload = () => {
-        this.isApiLoaded.set(true);
-        this.geocoder = new google.maps.Geocoder();
-        resolve();
+       this.zone.run(() => {
+          this.isApiLoaded.set(true);
+          this.geocoder = new google.maps.Geocoder();
+          console.log('Google Maps API loaded successfully');
+          resolve();
+        });
       };
 
       document.head.appendChild(script);

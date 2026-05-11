@@ -4,7 +4,7 @@ export interface Issue {
   description: string;
   latitude: number;
   longitude: number;
-  locationName?: string; 
+  address?: string; 
   severity: any;    
   status: any;
   createdAt: Date;

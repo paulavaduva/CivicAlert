@@ -21,5 +21,16 @@ namespace CivicAlert.Repositories
             await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
         }
+        public async Task UpdateAsync(Department department)
+        {
+            _context.Departments.Update(department);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Department department)
+        {
+            _context.Departments.Remove(department);
+            await _context.SaveChangesAsync();
+        }
     }
 }
