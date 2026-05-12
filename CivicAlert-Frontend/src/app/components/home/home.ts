@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { IssueService } from '../../services/issue';
 import { MapService } from '../../services/map.service';
-import { Issue } from '../../models/issue';
+import { Issue, IssueSeverity, IssueStatus } from '../../models/issue';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,7 @@ import { Issue } from '../../models/issue';
   styleUrl: './home.scss'    
 })
 export class HomeComponent implements OnInit {
-  private issueService = inject(IssueService);
+  public issueService = inject(IssueService);
   private mapService = inject(MapService);
   private cdr = inject(ChangeDetectorRef);
 

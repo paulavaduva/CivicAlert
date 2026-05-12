@@ -240,7 +240,6 @@ namespace CivicAlert.Controllers
                 var roles = await _userManager.GetRolesAsync(user);
                 var userRole = roles.FirstOrDefault() ?? "User";
 
-                // Logică de filtrare simplă
                 if (filter == "staff" && userRole == "User") continue;
                 if (filter == "citizens" && userRole != "User") continue;
 
@@ -258,6 +257,23 @@ namespace CivicAlert.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet("team-leaders/{deptId}")]
+        [Authorize(Roles = "HOD,Admin")]
+        public async Task<IActionResult> GetTeamLeadersByDepartment(int deptId)
+        {
+            var teamLeaders = await _userManager.GetUsersInRoleAsync("TeamLeader");
+
+            var filtered = teamLeaders
+                .Where(u => u.DepartmentId == deptId)
+                .Select(u => new {
+                    u.Id,
+                    u.FirstName,
+                    u.LastName
+                });
+
+            return Ok(filtered);
         }
     }
 }

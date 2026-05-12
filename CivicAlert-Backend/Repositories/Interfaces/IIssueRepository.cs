@@ -9,6 +9,6 @@ namespace CivicAlert.Repositories.Interfaces
         Task AddAsync(Issue issue);
         Task UpdateAsync(Issue issue);
         Task SaveChangesAsync();
-        Task<IEnumerable<Issue>> GetStaffIssuesAsync();
+        Task<IEnumerable<Issue>> GetStaffIssuesAsync(IssueStatus? status = null, int? deptId = null, string? userId = null);
     }
 }

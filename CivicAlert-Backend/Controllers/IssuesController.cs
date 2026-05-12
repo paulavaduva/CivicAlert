@@ -1,4 +1,5 @@
 ﻿using CivicAlert.DTOs;
+using CivicAlert.Services;
 using CivicAlert.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,22 +85,32 @@ namespace CivicAlert.Controllers
             return Ok(new { message = "Issue successfully assigned to team leader.", issue = result });
         }
 
-        [HttpPatch("{id}/complete")]
-        [Authorize(Roles = "TeamLeader,Admin")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Complete(int id, [FromForm] CompleteIssueDto dto)
+        [Authorize(Roles = "TeamLeader")]
+        [HttpPut("{id}/start")]
+        public async Task<IActionResult> StartWork(int id)
         {
-            if (dto.ResultImage == null) return BadRequest("The result image is required.");
+            var issue = await _service.StartIssueAsync(id);
+            if (issue == null) return NotFound("Sesizarea nu a fost găsită.");
 
-            var result = await _service.CompleteIssueAsync(id, dto.ResultImage);
+            return Ok(new { message = "Status actualizat în InProgress" });
+        }
 
-            if (result == null) return NotFound();
-            return Ok(result);
+        [Authorize(Roles = "TeamLeader")]
+        [HttpPut("{id}/complete")]
+        public async Task<IActionResult> CompleteWork(int id, [FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("O imagine dovadă este obligatorie pentru finalizare.");
+
+            var issue = await _service.CompleteIssueAsync(id, file);
+            if (issue == null) return NotFound("Sesizarea nu a fost găsită.");
+
+            return Ok(new { message = "Sesizare finalizată cu succes!", imageUrl = issue.ResolvedImageUrl });
         }
 
         [HttpGet("staff-inbox")]
         [Authorize(Roles = "Admin,Dispatcher,HOD,TeamLeader")]
-        public async Task<IActionResult> GetStaffInbox()
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetStaffInbox()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var role = User.FindFirstValue(ClaimTypes.Role);

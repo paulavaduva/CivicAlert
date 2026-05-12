@@ -25,13 +25,31 @@ namespace CivicAlert.Repositories
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
-        public async Task<IEnumerable<Issue>> GetStaffIssuesAsync()
+        public async Task<IEnumerable<Issue>> GetStaffIssuesAsync(IssueStatus? status = null, int? deptId = null, string? userId = null)
         {
-            return await _context.Issues
+            var query = _context.Issues
                 .Include(i => i.Category)
                     .ThenInclude(c => c.Department)
                 .Include(i => i.Reporter)
-                .Include(i => i.AssignedToUser) 
+                .Include(i => i.AssignedToUser)
+                .AsQueryable(); 
+
+            if (status.HasValue)
+            {
+                query = query.Where(i => i.Status == status.Value);
+            }
+
+            if (deptId.HasValue)
+            {
+                query = query.Where(i => i.Category.DepartmentId == deptId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                query = query.Where(i => i.AssignedToUserId == userId);
+            }
+
+            return await query
                 .OrderByDescending(i => i.CreatedAt)
                 .ToListAsync();
         }

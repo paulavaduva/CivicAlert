@@ -3,10 +3,38 @@
     
     @if (!selectedIssue()) {
       <div class="sidebar-header">
-        <h4 class="fw-bold m-0 text-primary">
-          <i class="bi bi-shield-lock me-2"></i>Management
-        </h4>
-        <p class="text-muted small mb-0">{{ issues().length }} sesizări active</p>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h4 class="fw-bold m-0 text-primary">
+            <i class="bi bi-shield-lock me-2"></i>Management
+          </h4>
+        </div>
+        
+        <div class="filter-section mb-3">
+          <label for="statusFilter" class="form-label small fw-bold text-muted text-uppercase mb-1" style="font-size: 0.65rem;">
+            Filtrează după status
+          </label>
+          <select id="statusFilter" 
+              class="form-select form-select-sm shadow-sm" 
+              [ngModel]="selectedFilter()" 
+              (ngModelChange)="selectedFilter.set($event); onFilterChange()"
+              title="Selectează statusul pentru filtrare">
+            <option value="All">Toate sesizările</option>
+            
+            @if (authService.userRole() === 'Dispatcher') {
+              <option value="Pending">Noi (Spre validare)</option>
+            }
+
+            @if (authService.userRole() === 'HOD') {
+              <option value="Validated">Validate (Spre asignare)</option>
+            }
+
+            <option value="Assigned">Asignate</option>
+            <option value="InProgress">În lucru</option>
+            <option value="Solved">Rezolvate</option>
+          </select>
+        </div>
+
+        <p class="text-muted small mb-0">{{ filteredIssues().length }} sesizări afișate</p>
       </div>
 
       <div class="sidebar-content">
@@ -17,38 +45,53 @@
         }
 
         <div class="issues-list">
-          @for (issue of issues(); track issue.id) {
+          @for (issue of filteredIssues(); track issue.id) {
             <div class="issue-list-item" 
                  [class.active]="selectedIssue()?.id === issue.id" 
                  (click)="selectedIssue.set(issue)">
               
-              <div class="severity-indicator" [ngClass]="{
-                'bg-info': issue.severity == 1 || issue.severity === 'Low',
-                'bg-warning': issue.severity == 2 || issue.severity === 'Medium',
-                'bg-orange': issue.severity == 3 || issue.severity === 'High',
-                'bg-danger pulse-animation': issue.severity == 4 || issue.severity === 'Urgent'
-              }"></div>
+              <div class="severity-indicator" 
+                   [ngClass]="issueService.getSeverityClass(issue.severity)"
+                   [class.pulse-animation]="issue.severity === 'Urgent'">
+              </div>
 
               <div class="item-body p-3">
-                <h6 class="issue-title mb-1">{{ issue.name }}</h6>
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <h6 class="issue-title mb-0 text-truncate" style="max-width: 160px;">{{ issue.name }}</h6>
+                  <!-- <span class="badge rounded-pill {{ issueService.getStatusClass(issue.status) }}" style="font-size: 0.6rem;">
+                    {{ issue.status }}
+                  </span> -->
+                </div>
+
+                @if (issue.assignedToUser) {
+                  <div class="text-primary mb-2" style="font-size: 0.75rem; font-weight: 600;">
+                    <i class="bi bi-person-fill me-1"></i>
+                    {{ issue.assignedToUser.firstName }} {{ issue.assignedToUser.lastName }}
+                  </div>
+                }
+
                 <div class="mb-2">
                   <small class="text-muted">
                     <i class="bi bi-calendar3 me-1"></i>
                     {{ issue.createdAt | date:'dd/MM/yyyy HH:mm' }}
                   </small>
                 </div>
+
                 <div class="d-flex align-items-center mb-2">
                   <i class="bi bi-geo-alt me-1 text-primary"></i>
                   <span class="address-text">{{ issue.address || 'Fără adresă' }}</span>
                 </div>
+
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center">
                     <span class="status-dot me-2" [ngClass]="{
-                      'status-pending': issue.status == 0 || issue.status === 'Pending',
-                      'status-progress': issue.status == 3 || issue.status === 'InProgress',
-                      'status-resolved': issue.status == 4 || issue.status === 'Solved'
+                      'status-pending': issue.status === 'Pending',
+                      'status-validated': issue.status === 'Validated',
+                      'status-assigned': issue.status === 'Assigned',
+                      'status-progress': issue.status === 'InProgress',
+                      'status-resolved': issue.status === 'Solved'
                     }"></span>
-                    <span class="status-label">{{ getStatusText(issue.status) }}</span>
+                    <span class="status-label">{{ issueService.getStatusText(issue.status) }}</span>
                   </div>
                   <i class="bi bi-chevron-right small text-muted"></i>
                 </div>
@@ -73,55 +116,56 @@
       <div class="sidebar-content animate__animated animate__fadeIn">
         <div class="detail-img-container" (click)="isImageModalOpen.set(true)" style="cursor: zoom-in;">
           @if (selectedIssue()?.imageUrl) {
-            <img [src]="selectedIssue()?.imageUrl" class="detail-img" alt="Click pentru mărire" title="Click pentru mărire">
-            <div class="zoom-hint">
-              <i class="bi bi-zoom-in"></i>
-            </div>
-          } @else {
-            }
+            <img [src]="selectedIssue()?.imageUrl" class="detail-img" alt="Imagine" title="Apasă pentru mărire">
+            <div class="zoom-hint"><i class="bi bi-zoom-in"></i></div>
+          }
         </div>
 
         @if (isImageModalOpen() && selectedIssue()?.imageUrl) {
           <div class="image-zoom-overlay" (click)="isImageModalOpen.set(false)">
-            <button class="btn-close-zoom" 
-                    (click)="isImageModalOpen.set(false)" 
-                    title="Închide imaginea mărită"
-                    aria-label="Închide imaginea mărită">
+            <button class="btn-close-zoom" (click)="isImageModalOpen.set(false)" aria-label="Închide">
               <i class="bi bi-x-lg"></i>
             </button>
-
             <img [src]="selectedIssue()?.imageUrl" 
               class="zoomed-image animate__animated animate__zoomIn" 
               (click)="$event.stopPropagation()"
-              alt="Imagine sesizare mărită" 
-              title="Imagine detaliată"
-              [attr.alt]="selectedIssue()?.name || 'Imagine sesizare mărită'"
-              [attr.title]="selectedIssue()?.name || 'Imagine detaliată'">
+              alt="Imagine sesizare mărită">
           </div>
         }
 
         <div class="p-4">
           <div class="d-flex gap-2 mb-3">
-            <span class="badge rounded-pill" [ngClass]="getUrgencyClass(selectedIssue()?.severity)">
-              {{ getUrgencyText(selectedIssue()?.severity) }}
+            <span class="badge rounded-pill" 
+                  [ngClass]="issueService.getSeverityClass(selectedIssue()?.severity)">
+              {{ issueService.getSeverityText(selectedIssue()?.severity) }}
             </span>
             
             <span class="badge bg-light text-dark border rounded-pill">
-              {{ getStatusText(selectedIssue()?.status) }}
+              {{ issueService.getStatusText(selectedIssue()?.status) }}
             </span>
           </div>
 
-          <h4 class="fw-bold mb-3">{{ selectedIssue()?.name || selectedIssue()?.title }}</h4>
+          <h4 class="fw-bold mb-3">{{ selectedIssue()?.name }}</h4>
           
           <div class="mb-3">
+            <div class="d-flex align-items-center mb-2 small text-muted">
+              <i class="bi bi-clock-history me-2"></i>
+              <span>Raportat la: <strong>{{ selectedIssue()?.createdAt | date:'dd/MM/yyyy HH:mm' }}</strong></span>
+            </div>
+
+            @if (selectedIssue()?.updatedAt) {
+              <div class="d-flex align-items-center mb-2 small text-primary">
+                <i class="bi bi-arrow-repeat me-2"></i>
+                <span>Ultima actualizare: <strong>{{ selectedIssue()?.updatedAt | date:'dd/MM/yyyy HH:mm' }}</strong></span>
+              </div>
+            }
             <div class="d-flex align-items-center mb-2 small">
               <i class="bi bi-geo-alt-fill text-primary me-2"></i>
               <span>{{ selectedIssue()?.address }}</span>
             </div>
             <div class="d-flex align-items-center small">
               <i class="bi bi-person-badge text-primary me-2"></i>
-              <span>Raportat de: {{ selectedIssue()?.reporter?.firstName }}</span>
-              <span>{{ selectedIssue()?.reporter?.lastName }}</span>
+              <span>Raportat de: {{ selectedIssue()?.reporter?.firstName }} {{ selectedIssue()?.reporter?.lastName }}</span>
             </div>
           </div>
 
@@ -129,13 +173,121 @@
           <p class="description-text mb-4">{{ selectedIssue()?.description }}</p>
 
           <div class="d-grid gap-2 border-top pt-4">
-            @if (authService.userRole() === 'Dispatcher' && (selectedIssue()?.status == 0 || selectedIssue()?.status === 'Pending')) {
-              <button class="btn btn-success rounded-pill py-2 fw-bold shadow-sm" (click)="onValidate(selectedIssue().id, true)">
+            
+            @if (authService.userRole() === 'Dispatcher' && selectedIssue()?.status === 'Pending') {
+              <button class="btn btn-success rounded-pill py-2 fw-bold shadow-sm" (click)="onValidate(selectedIssue()!.id, true)">
                 <i class="bi bi-check-circle me-2"></i> VALIDEAZĂ
               </button>
-              <button class="btn btn-outline-danger rounded-pill py-2 fw-bold" (click)="onValidate(selectedIssue().id, false)">
+              <button class="btn btn-outline-danger rounded-pill py-2 fw-bold" (click)="onValidate(selectedIssue()!.id, false)">
                 <i class="bi bi-x-circle me-2"></i> RESPINGE
               </button>
+            }
+
+            @if (authService.userRole() === 'HOD' && selectedIssue()?.status === 'Validated') {
+              <div class="assignment-box p-3 bg-light rounded-3 border">
+                <label for="teamLeaderSelect" class="form-label fw-bold small text-muted text-uppercase">Asignare Responsabil</label>
+                
+                <select id="teamLeaderSelect" 
+                    title="Selectează un Team Leader"
+                    class="form-select mb-3" 
+                    [(ngModel)]="selectedTeamLeaderId">
+                  <option value="" disabled>Selectează un responsabil...</option>
+                  @for (tl of teamLeaders(); track tl.id) {
+                    <option [value]="tl.id">{{ tl.firstName }} {{ tl.lastName }}</option>
+                  }
+                </select>
+
+                <button class="btn btn-primary w-100 fw-bold rounded-pill shadow-sm" 
+                        [disabled]="!selectedTeamLeaderId"
+                        (click)="onAssign()">
+                  <i class="bi bi-person-plus-fill me-2"></i> ASIGNEAZĂ
+                </button>
+              </div>
+            }
+            
+            @if (['Assigned', 'InProgress', 'Solved'].includes(selectedIssue()?.status || '')) {
+              <div class="info-card p-3 rounded-3 border-0 shadow-sm" 
+                   [ngClass]="selectedIssue()?.status === 'Solved' ? 'bg-success-subtle' : 'bg-blue-subtle'">
+                
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-person-check-fill fs-4 me-2" 
+                     [class.text-success]="selectedIssue()?.status === 'Solved'"
+                     [class.text-primary]="selectedIssue()?.status !== 'Solved'"></i>
+                  <div>
+                    <div class="fw-bold small text-uppercase text-muted" style="font-size: 0.65rem;">Responsabil Alocat</div>
+                    <div class="fw-bold">{{ selectedIssue()?.assignedToUser?.firstName }} {{ selectedIssue()?.assignedToUser?.lastName }}</div>
+                  </div>
+                </div>
+
+                <hr class="my-2 opacity-10">
+
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="small fw-bold">Progres actual:</span>
+                  <span class="badge" [ngClass]="issueService.getStatusClass(selectedIssue()?.status)">
+                    {{ issueService.getStatusText(selectedIssue()?.status) }}
+                  </span>
+                </div>
+
+                @if (selectedIssue()?.status === 'Solved' && selectedIssue()?.resolvedImageUrl) {
+                  <h6 class="fw-bold text-uppercase small text-success mb-2">
+                    <i class="bi bi-check-all me-1"></i> Dovadă Rezolvare (După)
+                  </h6>
+                  
+                  <div class="resolved-img-container mb-4" (click)="isResolvedImageModalOpen.set(true)" style="cursor: zoom-in;">
+                    <img [src]="selectedIssue()?.resolvedImageUrl" 
+                        class="detail-img border border-success border-3" 
+                        alt="Imagine rezolvare" 
+                        title="Apasă pentru mărire">
+                    <div class="zoom-hint"><i class="bi bi-zoom-in text-success"></i></div>
+                  </div>
+
+                  @if (isResolvedImageModalOpen() && selectedIssue()?.resolvedImageUrl) {
+                    <div class="image-zoom-overlay" (click)="isResolvedImageModalOpen.set(false)">
+                      <button class="btn-close-zoom" 
+                        (click)="isResolvedImageModalOpen.set(false)" 
+                        title="Închide imaginea"
+                        aria-label="Închide imaginea rezolvării">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                      <img [src]="selectedIssue()?.resolvedImageUrl" 
+                        class="zoomed-image animate__animated animate__zoomIn" 
+                        (click)="$event.stopPropagation()"
+                        alt="'Imagine rezolvare mărită'"
+                        title="'Detalii rezolvare'">
+                    </div>
+                  }
+                }
+              </div>
+            }      
+            
+            @if (authService.userRole() === 'TeamLeader') {
+              @if (selectedIssue()?.status === 'Assigned') {
+                <button class="btn btn-primary rounded-pill py-3 fw-bold shadow-sm" (click)="onStartWork()" title="Începe munca la sesizare">
+                  <i class="bi bi-play-circle-fill me-2"></i> ÎNCEPE LUCRAREA
+                </button>
+              }
+
+              @if (selectedIssue()?.status === 'InProgress') {
+                <div class="p-3 bg-light rounded-3 border border-primary border-dashed shadow-sm">
+                  <h6 class="fw-bold mb-3 text-primary small text-uppercase">Finalizare Execuție</h6>
+                  
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold">Încarcă dovadă foto (După):</label>
+                    <input type="file" 
+                           class="form-control form-control-sm" 
+                           accept="image/*" 
+                           (change)="onFileSelected($event)"
+                           title="Alege imaginea finală">
+                  </div>
+
+                  <button class="btn btn-success w-100 rounded-pill py-2 fw-bold" 
+                          [disabled]="!selectedFile"
+                          (click)="onCompleteWork()"
+                          title="Finalizează sesizarea">
+                    <i class="bi bi-check-lg me-2"></i> MARCHEAZĂ CA REZOLVAT
+                  </button>
+                </div>
+              }
             }
           </div>
         </div>
