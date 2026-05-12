@@ -1,3 +1,21 @@
+import { UserDto } from "./user";
+
+export enum IssueStatus {
+  Pending = 'Pending',
+  Validated = 'Validated',
+  Rejected = 'Rejected',
+  Assigned = 'Assigned',
+  InProgress = 'InProgress',
+  Solved = 'Solved'
+}
+
+export enum IssueSeverity {
+  Low = 'Low',
+  Medium = 'Medium',
+  High = 'High',
+  Urgent = 'Urgent'
+}
+
 export interface Issue {
   id: number;
   name: string;
@@ -5,8 +23,13 @@ export interface Issue {
   latitude: number;
   longitude: number;
   address?: string; 
-  severity: any;    
-  status: any;
+  severity: IssueSeverity; 
+  status: IssueStatus;
   createdAt: Date;
-  imageUrl?: string;   
+  updatedAt: Date;
+  imageUrl?: string;  
+  categoryName?: string;
+  reporter?: UserDto;
+  assignedToUser?: UserDto; 
+  resolvedImageUrl?: string;
 }

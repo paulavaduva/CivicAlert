@@ -1,5 +1,6 @@
 ﻿using CivicAlert.DTOs;
 using CivicAlert.Models;
+using System.Threading.Tasks;
 
 namespace CivicAlert.Services.Interfaces
 {
@@ -12,7 +13,8 @@ namespace CivicAlert.Services.Interfaces
         Task<Issue?> ValidateIssueAsync(int id, string dispatcherId, bool isApproved);
         Task<Issue?> AssignToTeamLeaderAsync(int id, string teamLeaderId);
         Task<Issue?> CompleteIssueAsync(int id, IFormFile resultImage);
-        Task<IEnumerable<Issue>> GetStaffInboxAsync(string userId, string role, int? deptId);
+        Task<IEnumerable<IssueDto>> GetStaffInboxAsync(string userId, string role, int? deptId);
+        Task<Issue?> StartIssueAsync(int id);
 
     }
 }

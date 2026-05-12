@@ -94,4 +94,8 @@ export class AuthService {
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/users/${userId}`);
   }
+
+  getTeamLeaders(deptId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/team-leaders/${deptId}`);
+  }
 }

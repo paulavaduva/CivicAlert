@@ -1,5 +1,6 @@
 ﻿using CivicAlert.DTOs;
 using CivicAlert.Models;
+using CivicAlert.Repositories;
 using CivicAlert.Repositories.Interfaces;
 using CivicAlert.Services.Interfaces;
 
@@ -94,6 +95,21 @@ namespace CivicAlert.Services
             return issue;
         }
 
+        public async Task<Issue?> StartIssueAsync(int id)
+        {
+            var issue = await _repo.GetByIdAsync(id);
+            if (issue == null) return null;
+
+            if (issue.Status != IssueStatus.Assigned)
+                return issue;
+
+            issue.Status = IssueStatus.InProgress;
+            issue.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(issue);
+            return issue;
+        }
+
         public async Task<Issue?> CompleteIssueAsync(int id, IFormFile resultImage)
         {
             var issue = await _repo.GetByIdAsync(id);
@@ -109,26 +125,59 @@ namespace CivicAlert.Services
             return issue;
         }
 
-        public async Task<IEnumerable<Issue>> GetStaffInboxAsync(string userId, string role, int? deptId)
+        public async Task<IEnumerable<IssueDto>> GetStaffInboxAsync(string userId, string role, int? deptId)
         {
-            var allIssues = await _repo.GetStaffIssuesAsync();
+            IEnumerable<Issue> issues;
 
             if (role == "Dispatcher" || role == "Admin")
             {
-                return allIssues;
+                issues = await _repo.GetStaffIssuesAsync(status: IssueStatus.Pending);
             }
-
-            if (role == "HOD" && deptId.HasValue)
+            else if (role == "HOD" && deptId.HasValue)
             {
-                return allIssues.Where(i => i.Category?.DepartmentId == deptId.Value);
-            }
+                var deptIssues = await _repo.GetStaffIssuesAsync(deptId: deptId.Value);
+                issues = deptIssues.Where(i =>
+                    i.Status != IssueStatus.Pending &&
+                    i.Status != IssueStatus.Rejected);
 
-            if (role == "TeamLeader")
+            }
+            else if (role == "TeamLeader")
             {
-                return allIssues.Where(i => i.AssignedToUserId == userId);
+                issues = await _repo.GetStaffIssuesAsync(userId: userId);
+            }
+            else
+            {
+                return Enumerable.Empty<IssueDto>();
             }
 
-            return Enumerable.Empty<Issue>();
+            return issues.Select(i => new IssueDto
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Address = i.Address,
+                Latitude = i.Latitude,
+                Longitude = i.Longitude,
+                ImageUrl = i.ImageUrl,
+                Status = i.Status.ToString(),
+                Severity = i.Severity.ToString(),
+                CreatedAt = (DateTime)i.CreatedAt,
+                UpdatedAt = i.UpdatedAt,
+                CategoryName = i.Category?.Name,
+                Reporter = i.Reporter != null ? new UserDto
+                {
+                    Id = i.Reporter.Id,
+                    FirstName = i.Reporter.FirstName,
+                    LastName = i.Reporter.LastName
+                } : null,
+                AssignedToUser = i.AssignedToUser != null ? new UserDto()
+                {
+                    Id = i.AssignedToUser.Id,
+                    FirstName = i.AssignedToUser.FirstName,
+                    LastName = i.AssignedToUser.LastName
+                } : null,
+                ResolvedImageUrl = i.ResolvedImageUrl
+            });
         }
     }
 }

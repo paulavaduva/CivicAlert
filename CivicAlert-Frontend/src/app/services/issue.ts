@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Issue } from '../models/issue';
+import { Issue, IssueSeverity, IssueStatus } from '../models/issue';
 import { environment } from '../../environments/environment.development';
 
 @Injectable({
@@ -38,11 +38,60 @@ export class IssueService {
     });
   }
 
+  startIssue(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/start`, {});
+  }
+
   completeIssue(id: number, formData: FormData): Observable<Issue> {
-    return this.http.patch<Issue>(`${this.apiUrl}/${id}/complete`, formData);
+    return this.http.put<Issue>(`${this.apiUrl}/${id}/complete`, formData);
   }
 
   getStaffInbox(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/staff-inbox`);
+  }
+
+  getStatusText(status: IssueStatus | string | undefined | null): string {
+    if (!status) return 'N/A';
+    const mapping: Record<string, string> = {
+      [IssueStatus.Pending]: 'Pending',
+      [IssueStatus.Validated]: 'Validated',
+      [IssueStatus.Rejected]: 'Rejected',
+      [IssueStatus.Assigned]: 'Assigned',
+      [IssueStatus.InProgress]: 'In Progress',
+      [IssueStatus.Solved]: 'Solved'
+    };
+    return mapping[status] || 'Unknown';
+  }
+
+  getStatusClass(status: string | undefined): string {
+    switch (status) {
+      case 'Validated': return 'bg-warning text-dark'; 
+      case 'Assigned': return 'bg-info text-white';    
+      case 'InProgress': return 'bg-primary text-white'; 
+      case 'Solved': return 'bg-success text-white';   
+      default: return 'bg-secondary text-white';
+    }
+  }
+
+  getSeverityText(severity: IssueSeverity | string | undefined | null): string {
+    if (!severity) return 'N/A';
+    const mapping: Record<string, string> = {
+      [IssueSeverity.Urgent]: 'Urgent',
+      [IssueSeverity.High]: 'High',
+      [IssueSeverity.Medium]: 'Medium',
+      [IssueSeverity.Low]: 'Low'
+    };
+    return mapping[severity] || 'N/A';
+  }
+
+  getSeverityClass(severity: IssueSeverity | string | undefined | null): string {
+    if (!severity) return 'bg-secondary';
+    switch (severity) {
+      case IssueSeverity.Urgent: return 'bg-danger text-white';
+      case IssueSeverity.High: return 'bg-orange text-white';
+      case IssueSeverity.Medium: return 'bg-warning text-dark';
+      case IssueSeverity.Low: return 'bg-info text-dark';
+      default: return 'bg-secondary';
+    }
   }
 }
