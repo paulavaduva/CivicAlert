@@ -53,5 +53,14 @@ namespace CivicAlert.Repositories
                 .OrderByDescending(i => i.CreatedAt)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Issue>> GetIssuesByUserIdAsync(string userId)
+        {
+            return await _context.Issues
+                .Include(i => i.Category) 
+                .Where(i => i.UserId == userId)
+                .OrderByDescending(i => i.CreatedAt) 
+                .ToListAsync();
+        }
     }
 }

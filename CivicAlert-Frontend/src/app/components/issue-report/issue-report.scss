@@ -1,0 +1,51 @@
+.border-dashed {
+  border-style: dashed !important;
+  border-width: 2px !important;
+  border-color: #dee2e6 !important;
+}
+
+#reportMap {
+  transition: box-shadow 0.3s ease;
+  &:hover {
+    box-shadow: 0 0 15px rgba(var(--bs-primary-rgb), 0.2);
+  }
+}
+
+.card {
+    transition: all 0.3s ease;
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+label {
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.pac-container {
+  z-index: 10000 !important; /* Forțează lista de sugestii deasupra oricărui modal sau card */
+  border-radius: 8px;
+  margin-top: 2px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
+}
+
+.pac-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f8f9fa;
+  }
+}
+
+.pulse-opacity {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}

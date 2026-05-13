@@ -15,6 +15,6 @@ namespace CivicAlert.Services.Interfaces
         Task<Issue?> CompleteIssueAsync(int id, IFormFile resultImage);
         Task<IEnumerable<IssueDto>> GetStaffInboxAsync(string userId, string role, int? deptId);
         Task<Issue?> StartIssueAsync(int id);
-
+        Task<IEnumerable<IssueDto>> GetUserIssuesAsync(string userId);
     }
 }

@@ -179,5 +179,23 @@ namespace CivicAlert.Services
                 ResolvedImageUrl = i.ResolvedImageUrl
             });
         }
+
+        public async Task<IEnumerable<IssueDto>> GetUserIssuesAsync(string userId)
+        {
+            var issues = await _repo.GetIssuesByUserIdAsync(userId);
+
+            return issues.Select(i => new IssueDto
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Status = i.Status.ToString(),
+                CreatedAt = (DateTime)i.CreatedAt,
+                UpdatedAt = i.UpdatedAt,
+                CategoryName = i.Category?.Name,
+                Address = i.Address,
+                ImageUrl = i.ImageUrl
+            }).OrderByDescending(i => i.CreatedAt);
+        }
     }
 }

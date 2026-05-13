@@ -121,5 +121,17 @@ namespace CivicAlert.Controllers
             var issues = await _service.GetStaffInboxAsync(userId, role, deptId);
             return Ok(issues);
         }
+
+        [Authorize] 
+        [HttpGet("my-issues")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetMyIssues()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var issues = await _service.GetUserIssuesAsync(userId);
+            return Ok(issues);
+        }
     }
 }
