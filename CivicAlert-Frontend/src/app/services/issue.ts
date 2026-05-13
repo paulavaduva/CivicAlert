@@ -50,6 +50,10 @@ export class IssueService {
     return this.http.get<any[]>(`${this.apiUrl}/staff-inbox`);
   }
 
+  getMyIssues(): Observable<Issue[]> {
+    return this.http.get<Issue[]>(`${this.apiUrl}/my-issues`);
+  }
+
   getStatusText(status: IssueStatus | string | undefined | null): string {
     if (!status) return 'N/A';
     const mapping: Record<string, string> = {

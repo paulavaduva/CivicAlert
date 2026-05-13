@@ -1,0 +1,82 @@
+.container {
+  margin-top: 80px !important; 
+}
+
+.issue-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  }
+}
+
+.accordion-item {
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+    border-left-color: var(--bs-primary);
+  }
+}
+
+.accordion-button {
+  background-color: white !important;
+  box-shadow: none !important;
+  
+  &:not(.collapsed) {
+    color: var(--bs-primary);
+    &::after {
+        transform: rotate(-180deg);
+    }
+  }
+
+  &::after {
+    margin-left: 1rem; 
+  }
+}
+
+.img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.1);
+      cursor: zoom-in; 
+    }
+  }
+}
+
+.text-secondary {
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.border-dashed {
+  border-style: dashed !important;
+  border-width: 2px !important;
+}
+
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 0.5em 1em;
+}
+
+@media (max-width: 768px) {
+  .accordion-button {
+    padding: 1rem 0.75rem;
+  }
+}

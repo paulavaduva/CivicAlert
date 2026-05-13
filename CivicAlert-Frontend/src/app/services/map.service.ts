@@ -9,7 +9,7 @@ export class MapService {
   isApiLoaded = signal<boolean>(false);
   private geocoder?: google.maps.Geocoder;
 
-  private map?: google.maps.Map;
+  public map?: google.maps.Map;
   private markers: any[] = [];
 
   constructor() {}
@@ -24,7 +24,8 @@ export class MapService {
       }
 
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&callback=Function.prototype`;
+
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=places&callback=Function.prototype`;
       script.async = true;
       script.defer = true;
 
@@ -98,5 +99,62 @@ export class MapService {
     } catch {
       return 'Adresă indisponibilă';
     }
+  }
+
+  getCurrentLocation(): Promise<google.maps.LatLngLiteral> {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject('Geolocația nu este suportată de acest browser.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0
+        }
+      );
+    });
+  }
+
+  // În map.service.ts
+
+  async setupAutocomplete(inputElement: HTMLInputElement, onSelect: (lat: number, lng: number, address: string) => void) {
+    // Importăm biblioteca "places" în mod dinamic (metoda recomandată de Google acum)
+    const { Autocomplete } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+
+    const autocomplete = new Autocomplete(inputElement, {
+      componentRestrictions: { country: 'ro' },
+      // 'location' este acum inclus în 'geometry' sau cerut separat în versiunile noi
+      fields: ['geometry', 'formatted_address', 'name'] 
+    });
+
+    // Această funcție se declanșează când alegi o sugestie SAU când dai Enter pe o sugestie selectată
+    autocomplete.addListener('place_changed', () => {
+      this.zone.run(() => {
+        const place = autocomplete.getPlace();
+        
+        if (!place.geometry || !place.geometry.location) {
+          console.warn("Locația nu a putut fi găsită pentru acest input.");
+          return;
+        }
+
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        const address = place.formatted_address || place.name || '';
+        
+        onSelect(lat, lng, address);
+      });
+    });
   }
 }

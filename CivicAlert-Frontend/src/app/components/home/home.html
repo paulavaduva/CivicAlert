@@ -41,7 +41,7 @@
               </span>
             </div>
 
-            <div class="mt-2 d-flex align-items-center justify-content-between">
+            <!-- <div class="mt-2 d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
                 <span class="status-dot me-2" [ngClass]="{
                         'status-pending': issue.status === 'Pending',
@@ -53,7 +53,7 @@
                 </span>
               </div>
               <i class="bi bi-chevron-right small text-muted"></i>
-            </div>
+            </div> -->
           </div>
         </div>
         } @empty {
@@ -88,9 +88,9 @@
         <span class="badge rounded-pill me-2" [ngClass]="issueService.getSeverityClass(selectedIssue.severity)">
           {{ issueService.getSeverityText(selectedIssue.severity) }}
         </span>
-        <span class="badge bg-light text-dark border rounded-pill">
+        <!-- <span class="badge bg-light text-dark border rounded-pill">
           {{ issueService.getStatusText(selectedIssue.status) }}
-        </span>
+        </span> -->
       </div>
 
       <h3 class="fw-bold mb-3">{{ selectedIssue.name }}</h3>

@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
   fetchIssues() {
     this.issueService.getIssues().subscribe({
       next: (data) => {
-        this.issues = data;
+        this.issues = data.filter(issue => issue.status !== 'Solved');
         // this.enrichIssuesWithAddresses();
         this.cdr.detectChanges();
       },
