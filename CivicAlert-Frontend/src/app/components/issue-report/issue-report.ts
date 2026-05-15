@@ -31,12 +31,14 @@ export class IssueReportComponent implements OnInit {
   isSubmitting = signal(false);
   selectedFile: File | null = null;
 
+  analysisStatus = signal<string>('');
+
   constructor() {
     this.reportForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      severity: [IssueSeverity.Medium, Validators.required],
-      categoryId: ['', Validators.required],
+      // severity: [IssueSeverity.Medium, Validators.required],
+      // categoryId: ['', Validators.required],
       latitude: [null, Validators.required],
       longitude: [null, Validators.required],
       address: ['', Validators.required]
@@ -116,12 +118,13 @@ export class IssueReportComponent implements OnInit {
     }
 
     this.isSubmitting.set(true);
+    this.analysisStatus.set('AI-ul analizează imaginea și verifică duplicatele...');
 
     const formData = new FormData();
     formData.append('name', this.reportForm.value.name);
     formData.append('description', this.reportForm.value.description);
-    formData.append('severity', this.reportForm.value.severity.toString());
-    formData.append('categoryId', this.reportForm.value.categoryId.toString());
+    formData.append('severity', '1');
+    formData.append('categoryId', '0');
     formData.append('latitude', this.reportForm.value.latitude); 
     formData.append('longitude', this.reportForm.value.longitude);
     formData.append('address', this.reportForm.value.address);
@@ -129,13 +132,20 @@ export class IssueReportComponent implements OnInit {
 
     this.issueService.createIssue(formData).subscribe({
       next: () => {
-        alert('Sesizarea a fost trimisă cu succes!');
+        this.isSubmitting.set(false);
+        alert('Sesizarea a fost procesată de AI și trimisă cu succes!');
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        console.error('Eroare la trimitere:', err);
-        alert('A apărut o eroare. Încearcă din nou.');
         this.isSubmitting.set(false);
+        this.analysisStatus.set('');
+
+        if (err.status === 409) {
+          alert((err.error?.message || 'Această problemă a fost deja raportată în această locație. Îți mulțumim pentru implicare!'));
+        } else {
+          console.error('Eroare la trimitere:', err);
+          alert('A apărut o eroare la procesarea AI. Te rugăm să încerci din nou.');
+        }
       }
     });
   }

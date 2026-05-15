@@ -11,5 +11,6 @@ namespace CivicAlert.Repositories.Interfaces
         Task SaveChangesAsync();
         Task<IEnumerable<Issue>> GetStaffIssuesAsync(IssueStatus? status = null, int? deptId = null, string? userId = null);
         Task<IEnumerable<Issue>> GetIssuesByUserIdAsync(string userId);
+        Task<IEnumerable<Issue>> GetIssuesInRadiusAsync(double lat, double lng, double radiusInMeters);
     }
 }

@@ -16,5 +16,7 @@ namespace CivicAlert.Services.Interfaces
         Task<IEnumerable<IssueDto>> GetStaffInboxAsync(string userId, string role, int? deptId);
         Task<Issue?> StartIssueAsync(int id);
         Task<IEnumerable<IssueDto>> GetUserIssuesAsync(string userId);
+        Task<string?> FindBestTeamLeaderAsync(int categoryId, int deptId);
+        Task<Issue?> PerformManualAutoAssignAsync(int issueId);
     }
 }

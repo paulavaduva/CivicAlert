@@ -18,5 +18,9 @@
         public UserDto? AssignedToUser { get; set; }
         public string CategoryName { get; set; }
         public string? ResolvedImageUrl { get; set; }
+
+        public bool IsValid { get; set; }
+        public int? AiConfidenceScore { get; set; }
+        public string? AiValidationReason { get; set; }
     }
 }

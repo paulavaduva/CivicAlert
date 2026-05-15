@@ -32,11 +32,22 @@ namespace CivicAlert.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var result = await _service.CreateIssueAsync(dto, userId);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            try
+            {
+                var result = await _service.CreateIssueAsync(dto, userId);
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Eroare la procesarea sesizării: " + ex.Message });
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [AllowAnonymous] 
         public async Task<IActionResult> GetById(int id)
         {
@@ -45,7 +56,7 @@ namespace CivicAlert.Controllers
             return Ok(issue);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] IssueUpdateDto dto)
         {
@@ -64,7 +75,7 @@ namespace CivicAlert.Controllers
             }
         }
 
-        [HttpPatch("{id}/validate")]
+        [HttpPatch("{id:int}/validate")]
         [Authorize(Roles = "Dispatcher,Admin")]
         public async Task<IActionResult> Validate(int id, [FromBody] bool isApproved)
         {
@@ -75,7 +86,7 @@ namespace CivicAlert.Controllers
             return Ok(new { message = "Issue status updated by dispatcher.", issue = result });
         }
 
-        [HttpPatch("{id}/assign")]
+        [HttpPatch("{id:int}/assign")]
         [Authorize(Roles = "HOD,Admin")]
         public async Task<IActionResult> Assign(int id, [FromBody] string teamLeaderId)
         {
@@ -85,8 +96,24 @@ namespace CivicAlert.Controllers
             return Ok(new { message = "Issue successfully assigned to team leader.", issue = result });
         }
 
+        [HttpPatch("{id:int}/auto-assign")]
+        [Authorize(Roles = "HOD,Admin")]
+        public async Task<IActionResult> AutoAssign(int id)
+        {
+            var result = await _service.PerformManualAutoAssignAsync(id);
+
+            if (result == null)
+                return BadRequest(new { message = "Nu s-a găsit niciun Team Leader disponibil sau sesizarea nu are categorie validă." });
+
+            return Ok(new
+            {
+                message = "Sesizarea a fost asignată automat de către sistem.",
+                issue = result
+            });
+        }
+
         [Authorize(Roles = "TeamLeader")]
-        [HttpPut("{id}/start")]
+        [HttpPut("{id:int}/start")]
         public async Task<IActionResult> StartWork(int id)
         {
             var issue = await _service.StartIssueAsync(id);
@@ -96,13 +123,13 @@ namespace CivicAlert.Controllers
         }
 
         [Authorize(Roles = "TeamLeader")]
-        [HttpPut("{id}/complete")]
-        public async Task<IActionResult> CompleteWork(int id, [FromForm] IFormFile file)
+        [HttpPut("{id:int}/complete")]
+        public async Task<IActionResult> CompleteWork(int id, [FromForm] CompleteIssueDto dto)
         {
-            if (file == null || file.Length == 0)
+            if (dto.ResultImage == null || dto.ResultImage.Length == 0)
                 return BadRequest("O imagine dovadă este obligatorie pentru finalizare.");
 
-            var issue = await _service.CompleteIssueAsync(id, file);
+            var issue = await _service.CompleteIssueAsync(id, dto.ResultImage);
             if (issue == null) return NotFound("Sesizarea nu a fost găsită.");
 
             return Ok(new { message = "Sesizare finalizată cu succes!", imageUrl = issue.ResolvedImageUrl });

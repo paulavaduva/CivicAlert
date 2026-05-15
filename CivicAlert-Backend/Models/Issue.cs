@@ -45,7 +45,11 @@
         public User? Dispatcher { get; set; }
         public string? AssignedToUserId { get; set; }
         public User? AssignedToUser { get; set; }
-        public string? ResolvedImageUrl { get; set; } 
+        public string? ResolvedImageUrl { get; set; }
+
+        public bool IsValid { get; set; } = true;
+        public int? AiConfidenceScore { get; set; }
+        public string? AiValidationReason { get; set; }
 
     }
 }
