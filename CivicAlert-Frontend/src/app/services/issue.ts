@@ -37,6 +37,9 @@ export class IssueService {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+  autoAssignIssue(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/auto-assign`, {});
+  }
 
   startIssue(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/start`, {});

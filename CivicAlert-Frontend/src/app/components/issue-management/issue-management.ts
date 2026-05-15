@@ -124,6 +124,24 @@ export class IssueManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onAutoAssign() {
+    const issueId = this.selectedIssue()?.id;
+    if (!issueId) return;
+
+    this.isLoading.set(true);
+    this.issueService.autoAssignIssue(issueId).subscribe({
+      next: (res) => {
+        alert(res.message);
+        this.selectedIssue.set(null);
+        this.loadIssues();
+      },
+      error: (err) => {
+        alert(err.error?.message || 'Eroare la asignarea automată.');
+        this.isLoading.set(false);
+      }
+    });
+  }
+
   filteredIssues = computed(() => {
     const filterValue = this.selectedFilter();
     const allIssues = this.issues();

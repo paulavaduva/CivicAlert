@@ -11,7 +11,10 @@ namespace CivicAlert.Repositories
         public IssueRepository(CivicAlertContext context) => _context = context;
 
         public async Task<IEnumerable<Issue>> GetAllAsync()
-            => await _context.Issues.Include(i => i.Category).ToListAsync();
+            => await _context.Issues
+                .Include(i => i.Category)
+                .OrderByDescending(i => i.CreatedAt) 
+                .ToListAsync();
 
         public async Task<Issue?> GetByIdAsync(int id)
             => await _context.Issues.Include(i => i.Category).FirstOrDefaultAsync(i => i.Id == id);
@@ -60,6 +63,17 @@ namespace CivicAlert.Repositories
                 .Include(i => i.Category) 
                 .Where(i => i.UserId == userId)
                 .OrderByDescending(i => i.CreatedAt) 
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Issue>> GetIssuesInRadiusAsync(double lat, double lng, double radiusInMeters)
+        {
+            double delta = radiusInMeters / 111320.0;
+
+            return await _context.Issues
+                .Where(i => i.Status != IssueStatus.Solved && 
+                            i.Latitude >= lat - delta && i.Latitude <= lat + delta &&
+                            i.Longitude >= lng - delta && i.Longitude <= lng + delta)
                 .ToListAsync();
         }
     }

@@ -240,3 +240,80 @@ $primary-color: #0d6efd;
     transition: transform 0.3s ease;
   }
 }
+
+
+.ai-insight-card {
+  border-left: 4px solid $primary-color !important;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &.bg-success-subtle { background-color: #d1e7dd; color: #0a3622; border-color: #badbcc; }
+  &.bg-warning-subtle { background-color: #fff3cd; color: #664d03; border-color: #ffecb5; }
+  &.bg-danger-subtle { background-color: #f8d7da; color: #842029; border-color: #f5c2c7; }
+
+  .bi-robot {
+    filter: drop-shadow(0 0 5px rgba($primary-color, 0.3));
+  }
+
+  p.italic {
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+}
+
+.btn-outline-primary {
+  &:hover .bi-robot {
+    animation: bounce 0.5s infinite alternate;
+  }
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+.address-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.status-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #495057;
+}
+
+.assignment-box {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  
+  .form-select {
+    font-size: 0.9rem;
+    border-radius: 8px;
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.1);
+    }
+  }
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: white;
+
+  .letter-spacing {
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    color: $primary-color;
+  }
+}

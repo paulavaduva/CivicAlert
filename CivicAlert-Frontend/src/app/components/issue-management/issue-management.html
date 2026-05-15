@@ -61,6 +61,11 @@
                   <!-- <span class="badge rounded-pill {{ issueService.getStatusClass(issue.status) }}" style="font-size: 0.6rem;">
                     {{ issue.status }}
                   </span> -->
+                @if (issue.aiConfidenceScore) {
+                    <span class="badge rounded-pill bg-light text-dark border" style="font-size: 0.6rem;">
+                      <i class="bi bi-robot text-primary me-1"></i>{{ issue.aiConfidenceScore }}%
+                    </span>
+                  }
                 </div>
 
                 @if (issue.assignedToUser) {
@@ -146,6 +151,36 @@
 
           <h4 class="fw-bold mb-3">{{ selectedIssue()?.name }}</h4>
           
+          @if (selectedIssue()?.aiConfidenceScore) {
+            <div class="ai-insight-card p-3 mb-4 rounded-3 border-0 shadow-sm" 
+                 [ngClass]="{
+                   'bg-success-subtle': selectedIssue()!.aiConfidenceScore! >= 80,
+                   'bg-warning-subtle': selectedIssue()!.aiConfidenceScore! < 80 && selectedIssue()!.aiConfidenceScore! >= 50,
+                   'bg-danger-subtle': selectedIssue()!.aiConfidenceScore! < 50
+                 }"
+                 style="border-left: 4px solid #0d6efd !important;">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-robot fs-4 me-2 text-primary"></i>
+                <span class="fw-bold small text-uppercase text-muted">Analiză AI CivicAlert</span>
+              </div>
+              
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small">Scor de încredere (Validitate):</span>
+                <span class="fw-bold fs-5" [ngClass]="{
+                  'text-success': selectedIssue()!.aiConfidenceScore! >= 80,
+                  'text-warning': selectedIssue()!.aiConfidenceScore! < 80 && selectedIssue()!.aiConfidenceScore! >= 50,
+                  'text-danger': selectedIssue()!.aiConfidenceScore! < 50
+                }">{{ selectedIssue()?.aiConfidenceScore }}%</span>
+              </div>
+
+              <div class="bg-white bg-opacity-50 p-2 rounded-2">
+                <p class="small mb-0 text-dark" style="font-style: italic;">
+                  <strong>Motiv AI:</strong> {{ selectedIssue()?.aiValidationReason || 'Imaginea corespunde descrierii furnizate.' }}
+                </p>
+              </div>
+            </div>
+          }
+
           <div class="mb-3">
             <div class="d-flex align-items-center mb-2 small text-muted">
               <i class="bi bi-clock-history me-2"></i>
@@ -174,32 +209,44 @@
           <div class="d-grid gap-2 border-top pt-4">
             
             @if (authService.userRole() === 'Dispatcher' && selectedIssue()?.status === 'Pending') {
-              <button class="btn btn-success rounded-pill py-2 fw-bold shadow-sm" (click)="onValidate(selectedIssue()!.id, true)">
-                <i class="bi bi-check-circle me-2"></i> VALIDEAZĂ
+              <button class="btn btn-success rounded-pill py-2 fw-bold shadow-sm mb-1" (click)="onValidate(selectedIssue()!.id, true)">
+                <i class="bi bi-check-circle me-2"></i> VALIDEAZĂ SESIZAREA
               </button>
               <button class="btn btn-outline-danger rounded-pill py-2 fw-bold" (click)="onValidate(selectedIssue()!.id, false)">
-                <i class="bi bi-x-circle me-2"></i> RESPINGE
+                <i class="bi bi-x-circle me-2"></i> RESPINGE (SPAM)
               </button>
+              <div class="text-center mt-2">
+                <small class="text-muted italic" style="font-size: 0.7rem;">AI recomandă @if(selectedIssue()!.aiConfidenceScore! > 70){ validarea } @else { verificarea manuală }.</small>
+              </div>
             }
 
             @if (authService.userRole() === 'HOD' && selectedIssue()?.status === 'Validated') {
               <div class="assignment-box p-3 bg-light rounded-3 border">
                 <label for="teamLeaderSelect" class="form-label fw-bold small text-muted text-uppercase">Asignare Responsabil</label>
                 
-                <select id="teamLeaderSelect" 
-                    title="Selectează un Team Leader"
-                    class="form-select mb-3" 
-                    [(ngModel)]="selectedTeamLeaderId">
-                  <option value="" disabled>Selectează un responsabil...</option>
-                  @for (tl of teamLeaders(); track tl.id) {
-                    <option [value]="tl.id">{{ tl.firstName }} {{ tl.lastName }}</option>
-                  }
-                </select>
+                <div class="d-flex gap-2 mb-3">
+                  <select id="teamLeaderSelect" 
+                      title="Selectează un Team Leader"
+                      class="form-select mb-3" 
+                      [(ngModel)]="selectedTeamLeaderId">
+                    <option value="" disabled>Selectează un responsabil...</option>
+                    @for (tl of teamLeaders(); track tl.id) {
+                      <option [value]="tl.id">{{ tl.firstName }} {{ tl.lastName }}</option>
+                    }
+                  </select>
+
+                  <button class="btn btn-primary" 
+                          (click)="onAutoAssign()" 
+                          [disabled]="isLoading()"
+                          title="Asignare automată bazată pe volumul de muncă și categorie">
+                    <i class="bi bi-robot"></i>
+                  </button>
+                </div>
 
                 <button class="btn btn-primary w-100 fw-bold rounded-pill shadow-sm" 
                         [disabled]="!selectedTeamLeaderId"
                         (click)="onAssign()">
-                  <i class="bi bi-person-plus-fill me-2"></i> ASIGNEAZĂ
+                  <i class="bi bi-person-plus-fill me-2"></i> ASIGNEAZĂ MANUAL
                 </button>
               </div>
             }
@@ -229,7 +276,7 @@
 
                 @if (selectedIssue()?.status === 'Solved' && selectedIssue()?.resolvedImageUrl) {
                   <h6 class="fw-bold text-uppercase small text-success mb-2">
-                    <i class="bi bi-check-all me-1"></i> Dovadă Rezolvare (După)
+                    <i class="bi bi-check-all me-1"></i> Dovadă Rezolvare
                   </h6>
                   
                   <div class="resolved-img-container mb-4" (click)="isResolvedImageModalOpen.set(true)" style="cursor: zoom-in;">
@@ -271,7 +318,7 @@
                   <h6 class="fw-bold mb-3 text-primary small text-uppercase">Finalizare Execuție</h6>
                   
                   <div class="mb-3">
-                    <label class="form-label small fw-bold">Încarcă dovadă foto (După):</label>
+                    <label class="form-label small fw-bold">Încarcă dovadă foto:</label>
                     <input type="file" 
                            class="form-control form-control-sm" 
                            accept="image/*" 

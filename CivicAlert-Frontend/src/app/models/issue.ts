@@ -32,4 +32,7 @@ export interface Issue {
   reporter?: UserDto;
   assignedToUser?: UserDto; 
   resolvedImageUrl?: string;
+  isValid: boolean;          
+  aiConfidenceScore?: number; 
+  aiValidationReason?: string;
 }

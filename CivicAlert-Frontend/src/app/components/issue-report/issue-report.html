@@ -18,7 +18,7 @@
             </div>
 
             <div class="row mb-3">
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <label for="catSelect" class="form-label fw-bold">Categorie</label>
                 <select id="catSelect" formControlName="categoryId" 
                         class="form-select rounded-3"
@@ -28,9 +28,9 @@
                     <option [value]="cat.id">{{ cat.name }}</option>
                   }
                 </select>
-              </div>
+              </div> -->
               
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <label for="sevSelect" class="form-label fw-bold">Urgență</label>
                 <select id="sevSelect" formControlName="severity" 
                         class="form-select rounded-3"
@@ -40,7 +40,7 @@
                   <option [value]="IssueSeverity.High">Ridicată</option>
                   <option [value]="IssueSeverity.Urgent">Urgență / Pericol</option>
                 </select>
-              </div>
+              </div> -->
             </div>
 
             <div class="mb-3">
@@ -108,16 +108,33 @@
             </div>
 
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow" 
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow position-relative" 
                       [disabled]="isSubmitting()"
                       title="Trimite sesizarea">
+                
                 @if (isSubmitting()) {
                   <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                  Se trimite...
+                  PROCESARE SMART...
                 } @else {
                   <i class="bi bi-send-fill me-2"></i>TRIMITE SESIZAREA
                 }
               </button>
+
+              @if (isSubmitting()) {
+                <div class="mt-3 p-3 border rounded-4 bg-light shadow-sm animate__animated animate__fadeIn">
+                  <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                      <i class="bi bi-robot fs-2 text-primary pulse-animation"></i>
+                    </div>
+                    <div class="ms-3">
+                      <p class="mb-0 small fw-bold text-dark">{{ analysisStatus() }}</p>
+                      <div class="progress mt-1" style="height: 4px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
 
           </form>
